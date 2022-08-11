@@ -9,24 +9,23 @@ import {
   Req,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { OrderService } from './order.service';
+import { EmployeeService } from './employee.service';
 
-@Controller('order')
-export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+@Controller('employee')
+export class EmployeeController {
+  constructor(private readonly employeeService: EmployeeService) {}
 
   @Post()
-  async createOrder(@Req() req: Request) {
+  async createEmployee(@Req() req: Request) {
     console.log('req.body', req.body);
-    return await this.orderService.createOrder(req.body);
+    return await this.employeeService.createEmployee(req.body);
   }
 
-  @Delete('/deleteOrder/:id')
-  async deleteOrder(@Param('id') orderId: string) {
-    return await this.orderService.deleteOrder(orderId);
-  }
 
- 
+  @Delete('/deleteEmployee/:id')
+  async deleteEmployee(@Param('id') employeeId: string) {
+    return await this.employeeService.deleteEmployee(employeeId);
+  }
 
   // @Post('getAllProjects')
   // async getAllProjects(@Body('id') id: string, @Body('isAdmin') isAdmin: boolean,@Body('parent_folder') parent_folder: string) {

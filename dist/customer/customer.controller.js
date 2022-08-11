@@ -23,6 +23,9 @@ let CustomerController = class CustomerController {
         console.log('req.body', req.body);
         return await this.customerService.createCustomer(req.body);
     }
+    async deleteCustomer(customerId) {
+        return await this.customerService.deleteCustomer(customerId);
+    }
 };
 __decorate([
     (0, common_1.Post)(),
@@ -31,6 +34,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CustomerController.prototype, "createCustomer", null);
+__decorate([
+    (0, common_1.Delete)('/deleteCustomer/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CustomerController.prototype, "deleteCustomer", null);
 CustomerController = __decorate([
     (0, common_1.Controller)('customer'),
     __metadata("design:paramtypes", [customer_service_1.CustomerService])

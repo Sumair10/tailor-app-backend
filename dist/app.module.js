@@ -15,6 +15,7 @@ const nodemailer_module_1 = require("./nodemailer/nodemailer.module");
 const order_module_1 = require("./order/order.module");
 const customer_module_1 = require("./customer/customer.module");
 const measurement_module_1 = require("./measurement/measurement.module");
+const employee_module_1 = require("./employee/employee.module");
 require('dotenv').config({ path: './.env' });
 let AppModule = class AppModule {
 };
@@ -24,6 +25,7 @@ AppModule = __decorate([
             order_module_1.OrderModule,
             customer_module_1.CustomerModule,
             measurement_module_1.MeasurementModule,
+            employee_module_1.EmployeeModule,
             mongoose_1.MongooseModule.forRoot(process.env.MONGO_URI, {
                 useNewUrlParser: true,
             }),

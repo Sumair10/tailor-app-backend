@@ -16,24 +16,25 @@ export class OrderService {
   ) {}
   /*************************** create a folder ***************************/
   async createOrder(req): Promise<any> {
-    // console.log('req.body', req);
-    // let folderExist;
-    // folderExist = await this.folderModel.find({
-    //   parent_folder: req.parent_folder,
-    //   name: req.name,
-    // });
-    // console.log('folders of parent', folderExist);
-
-    // if (folderExist.length !== 0) {
-    //   throw new HttpException(
-    //     'Folder name already exist',
-    //     HttpStatus.BAD_REQUEST,
-    //   );
-    // } else {
+  
       const newOrder = new this.orderModel(req);
       console.log('new model : ', newOrder);
       return await newOrder.save();
-    // }
+    
+  }
+
+  async deleteOrder(orderId: string): Promise<any> {
+    let order;
+
+    try {
+      order = await this.orderModel.findById(orderId).exec();
+    } catch (error) {
+      throw new NotFoundException('employee not found');
+    }
+    if (order) {
+      await this.orderModel.findByIdAndDelete(orderId);
+      return 'Employee deleted successfully';
+    }
   }
 
   /*************************** get all projects ***************************/

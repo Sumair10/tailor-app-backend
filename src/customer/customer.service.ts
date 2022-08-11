@@ -21,6 +21,19 @@ export class CustomerService {
       console.log('new model : ', newCustomer);
       return await newCustomer.save();
   }
+  async deleteCustomer(customerId: string): Promise<any> {
+    let customer;
+
+    try {
+      customer = await this.customerModel.findById(customerId).exec();
+    } catch (error) {
+      throw new NotFoundException('customer not found');
+    }
+    if (customer) {
+      await this.customerModel.findByIdAndDelete(customerId);
+      return 'customer deleted successfully';
+    }
+  }
 
   /*************************** get all projects ***************************/
   // async getAllProjects(id, isAdmin, parent_folder) {

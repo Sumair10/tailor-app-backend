@@ -23,6 +23,9 @@ let OrderController = class OrderController {
         console.log('req.body', req.body);
         return await this.orderService.createOrder(req.body);
     }
+    async deleteOrder(orderId) {
+        return await this.orderService.deleteOrder(orderId);
+    }
 };
 __decorate([
     (0, common_1.Post)(),
@@ -31,6 +34,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "createOrder", null);
+__decorate([
+    (0, common_1.Delete)('/deleteOrder/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "deleteOrder", null);
 OrderController = __decorate([
     (0, common_1.Controller)('order'),
     __metadata("design:paramtypes", [order_service_1.OrderService])

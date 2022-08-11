@@ -21,6 +21,12 @@ export class CustomerController {
     return await this.customerService.createCustomer(req.body);
   }
 
+
+  @Delete('/deleteCustomer/:id')
+  async deleteCustomer(@Param('id') customerId: string) {
+    return await this.customerService.deleteCustomer(customerId);
+  }
+
   // @Post('getAllProjects')
   // async getAllProjects(@Body('id') id: string, @Body('isAdmin') isAdmin: boolean,@Body('parent_folder') parent_folder: string) {
   //   console.log('id', id);

@@ -12,37 +12,37 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CustomerService = void 0;
+exports.EmployeeService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-let CustomerService = class CustomerService {
-    constructor(customerModel) {
-        this.customerModel = customerModel;
+let EmployeeService = class EmployeeService {
+    constructor(employeeModel) {
+        this.employeeModel = employeeModel;
     }
-    async createCustomer(req) {
-        const newCustomer = new this.customerModel(req);
-        console.log('new model : ', newCustomer);
-        return await newCustomer.save();
+    async createEmployee(req) {
+        const newEmployee = new this.employeeModel(req);
+        console.log('new model : ', newEmployee);
+        return await newEmployee.save();
     }
-    async deleteCustomer(customerId) {
-        let customer;
+    async deleteEmployee(employeeId) {
+        let employee;
         try {
-            customer = await this.customerModel.findById(customerId).exec();
+            employee = await this.employeeModel.findById(employeeId).exec();
         }
         catch (error) {
-            throw new common_1.NotFoundException('customer not found');
+            throw new common_1.NotFoundException('employee not found');
         }
-        if (customer) {
-            await this.customerModel.findByIdAndDelete(customerId);
-            return 'customer deleted successfully';
+        if (employee) {
+            await this.employeeModel.findByIdAndDelete(employeeId);
+            return 'Employee deleted successfully';
         }
     }
 };
-CustomerService = __decorate([
+EmployeeService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_1.InjectModel)('Customer')),
+    __param(0, (0, mongoose_1.InjectModel)('Employee')),
     __metadata("design:paramtypes", [mongoose_2.Model])
-], CustomerService);
-exports.CustomerService = CustomerService;
-//# sourceMappingURL=customer.service.js.map
+], EmployeeService);
+exports.EmployeeService = EmployeeService;
+//# sourceMappingURL=employee.service.js.map

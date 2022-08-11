@@ -7,35 +7,36 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Measurement } from './measurement.schema';
+import { Employee } from './employee.schema';
 
 @Injectable()
-export class MeasurementService {
+export class EmployeeService {
   constructor(
-    @InjectModel('Measurement') private readonly measurementModel: Model<Measurement>,
+    @InjectModel('Employee') private readonly employeeModel: Model<Employee>,
   ) {}
   /*************************** create a folder ***************************/
-  async createMeasurement(req): Promise<any> {
+  async createEmployee(req): Promise<any> {
+   
+      const newEmployee = new this.employeeModel(req);
+      console.log('new model : ', newEmployee);
+      return await newEmployee.save();
   
-      const newMeasurement = new this.measurementModel(req);
-      console.log('new model : ', newMeasurement);
-      return await newMeasurement.save();
   }
 
-   /*************************** delete a measurement ***************************/
-   async deleteMeasurement(measurementId: string): Promise<any> {
-    let measurement;
+  async deleteEmployee(employeeId: string): Promise<any> {
+    let employee;
 
     try {
-      measurement = await this.measurementModel.findById(measurementId).exec();
+      employee = await this.employeeModel.findById(employeeId).exec();
     } catch (error) {
-      throw new NotFoundException('File not found');
+      throw new NotFoundException('employee not found');
     }
-    if (measurement) {
-      await this.measurementModel.findByIdAndDelete(measurementId);
-      return 'Measurement deleted successfully';
+    if (employee) {
+      await this.employeeModel.findByIdAndDelete(employeeId);
+      return 'Employee deleted successfully';
     }
   }
+
   /*************************** get all projects ***************************/
   // async getAllProjects(id, isAdmin, parent_folder) {
   //   console.log('id', id);

@@ -4,4 +4,5 @@ export declare class CustomerController {
     private readonly customerService;
     constructor(customerService: CustomerService);
     createCustomer(req: Request): Promise<any>;
+    deleteCustomer(customerId: string): Promise<any>;
 }

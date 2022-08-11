@@ -25,6 +25,19 @@ let MeasurementService = class MeasurementService {
         console.log('new model : ', newMeasurement);
         return await newMeasurement.save();
     }
+    async deleteMeasurement(measurementId) {
+        let measurement;
+        try {
+            measurement = await this.measurementModel.findById(measurementId).exec();
+        }
+        catch (error) {
+            throw new common_1.NotFoundException('File not found');
+        }
+        if (measurement) {
+            await this.measurementModel.findByIdAndDelete(measurementId);
+            return 'Measurement deleted successfully';
+        }
+    }
 };
 MeasurementService = __decorate([
     (0, common_1.Injectable)(),

@@ -4,4 +4,5 @@ export declare class OrderController {
     private readonly orderService;
     constructor(orderService: OrderService);
     createOrder(req: Request): Promise<any>;
+    deleteOrder(orderId: string): Promise<any>;
 }

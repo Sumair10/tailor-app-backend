@@ -25,6 +25,19 @@ let OrderService = class OrderService {
         console.log('new model : ', newOrder);
         return await newOrder.save();
     }
+    async deleteOrder(orderId) {
+        let order;
+        try {
+            order = await this.orderModel.findById(orderId).exec();
+        }
+        catch (error) {
+            throw new common_1.NotFoundException('employee not found');
+        }
+        if (order) {
+            await this.orderModel.findByIdAndDelete(orderId);
+            return 'Employee deleted successfully';
+        }
+    }
 };
 OrderService = __decorate([
     (0, common_1.Injectable)(),

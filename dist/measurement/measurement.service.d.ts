@@ -4,4 +4,5 @@ export declare class MeasurementService {
     private readonly measurementModel;
     constructor(measurementModel: Model<Measurement>);
     createMeasurement(req: any): Promise<any>;
+    deleteMeasurement(measurementId: string): Promise<any>;
 }

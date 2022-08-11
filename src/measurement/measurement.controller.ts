@@ -21,6 +21,13 @@ export class MeasurementController {
     return await this.measurementService.createMeasurement(req.body);
   }
 
+  @Delete('/deleteMeasurement/:id')
+  async deleteMeasurement(@Param('id') measurementId: string) {
+    return await this.measurementService.deleteMeasurement(measurementId);
+  }
+
+ 
+
   // @Post('getAllProjects')
   // async getAllProjects(@Body('id') id: string, @Body('isAdmin') isAdmin: boolean,@Body('parent_folder') parent_folder: string) {
   //   console.log('id', id);

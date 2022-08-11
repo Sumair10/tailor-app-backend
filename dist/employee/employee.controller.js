@@ -12,19 +12,19 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MeasurementController = void 0;
+exports.EmployeeController = void 0;
 const common_1 = require("@nestjs/common");
-const measurement_service_1 = require("./measurement.service");
-let MeasurementController = class MeasurementController {
-    constructor(measurementService) {
-        this.measurementService = measurementService;
+const employee_service_1 = require("./employee.service");
+let EmployeeController = class EmployeeController {
+    constructor(employeeService) {
+        this.employeeService = employeeService;
     }
-    async createMeasurement(req) {
+    async createEmployee(req) {
         console.log('req.body', req.body);
-        return await this.measurementService.createMeasurement(req.body);
+        return await this.employeeService.createEmployee(req.body);
     }
-    async deleteMeasurement(measurementId) {
-        return await this.measurementService.deleteMeasurement(measurementId);
+    async deleteEmployee(employeeId) {
+        return await this.employeeService.deleteEmployee(employeeId);
     }
 };
 __decorate([
@@ -33,17 +33,17 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], MeasurementController.prototype, "createMeasurement", null);
+], EmployeeController.prototype, "createEmployee", null);
 __decorate([
-    (0, common_1.Delete)('/deleteMeasurement/:id'),
+    (0, common_1.Delete)('/deleteEmployee/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], MeasurementController.prototype, "deleteMeasurement", null);
-MeasurementController = __decorate([
-    (0, common_1.Controller)('measurement'),
-    __metadata("design:paramtypes", [measurement_service_1.MeasurementService])
-], MeasurementController);
-exports.MeasurementController = MeasurementController;
-//# sourceMappingURL=measurement.controller.js.map
+], EmployeeController.prototype, "deleteEmployee", null);
+EmployeeController = __decorate([
+    (0, common_1.Controller)('employee'),
+    __metadata("design:paramtypes", [employee_service_1.EmployeeService])
+], EmployeeController);
+exports.EmployeeController = EmployeeController;
+//# sourceMappingURL=employee.controller.js.map

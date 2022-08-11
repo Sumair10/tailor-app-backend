@@ -100,6 +100,8 @@ export class FileService {
     return files;
   }
 
+  
+
   /*************************** delete a file ***************************/
   async deleteFile(fileId: string): Promise<any> {
     let file;
