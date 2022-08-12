@@ -10,6 +10,7 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const auth_module_1 = require("./auth/auth.module");
 const mongoose_1 = require("@nestjs/mongoose");
 const nodemailer_module_1 = require("./nodemailer/nodemailer.module");
 const order_module_1 = require("./order/order.module");
@@ -26,6 +27,7 @@ AppModule = __decorate([
             customer_module_1.CustomerModule,
             measurement_module_1.MeasurementModule,
             employee_module_1.EmployeeModule,
+            auth_module_1.AuthModule,
             mongoose_1.MongooseModule.forRoot(process.env.MONGO_URI, {
                 useNewUrlParser: true,
             }),

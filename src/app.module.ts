@@ -42,6 +42,7 @@ require('dotenv').config({ path: './.env' });
     CustomerModule,
     MeasurementModule,
     EmployeeModule,
+    AuthModule,
     MongooseModule.forRoot(process.env.MONGO_URI, {
       useNewUrlParser: true,
     }),

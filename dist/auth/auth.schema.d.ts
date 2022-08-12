@@ -1,17 +1,11 @@
 import * as mongoose from 'mongoose';
 export declare const AuthSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, any, {}, "type", {
+    name: string;
     email: string;
-    orgId: mongoose.Schema.Types.ObjectId;
-    hash?: string;
-    firstName?: string;
-    lastName?: string;
-    admin?: boolean;
+    password: string;
 }>;
 export interface Auth {
+    name: string;
     email: string;
-    hash: string;
-    firstName: string;
-    lastName: string;
-    admin: boolean;
-    orgId: string;
+    password: string;
 }

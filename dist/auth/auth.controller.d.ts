@@ -28,25 +28,8 @@ import { Request } from 'express';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
-    getAllUsersOfApp(): Promise<(import("mongoose").Document<unknown, any, Auth> & Auth & {
-        _id: import("mongoose").Types.ObjectId;
-    })[]>;
-    getAllUsersByOrgId(orgId: string): Promise<any>;
     signup(request: Request): Promise<any>;
-    login(email: string, password: string): Promise<{
-        userExist: import("mongoose").Document<unknown, any, Auth> & Auth & {
-            _id: import("mongoose").Types.ObjectId;
-        };
-        token: any;
-    }>;
-    forgetPassword(email: string): Promise<void>;
-    updatePassword(email: string, password: string, newPassword: string): Promise<void>;
-    addUserViaEmail(email: string, organizationId: string): Promise<any>;
-    resetPassword(email: string, password: string): Promise<void>;
-    editProfile(userId: String, userData: any): Promise<{
-        userExist: any;
-    }>;
-    getSingleUser(userId: string): Promise<import("mongoose").Document<unknown, any, Auth> & Auth & {
+    login(email: string, password: string): Promise<import("mongoose").Document<unknown, any, Auth> & Auth & {
         _id: import("mongoose").Types.ObjectId;
     }>;
 }

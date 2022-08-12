@@ -23,92 +23,61 @@ export class AuthService {
   ) {}
 
   /*************************** get all users of partical organization ***************************/
-  async getAllUsersByOrgId(orgId) {
-    let users;
-    //to see if id is a valid ObjectId or not (if not then throw error)
-    if (orgId.match(/^[0-9a-fA-F]{24}$/)) {
-      users = await this.authModel.find({ orgId: orgId });
-    } else {
-      throw new BadRequestException('Invalid ObjectId');
-    }
-    if (users.length == 0) {
-      throw new BadRequestException('No users found');
-    }
-    return users;
-  }
+  // async getAllUsersByOrgId(orgId) {
+  //   let users;
+  //   //to see if id is a valid ObjectId or not (if not then throw error)
+  //   if (orgId.match(/^[0-9a-fA-F]{24}$/)) {
+  //     users = await this.authModel.find({ orgId: orgId });
+  //   } else {
+  //     throw new BadRequestException('Invalid ObjectId');
+  //   }
+  //   if (users.length == 0) {
+  //     throw new BadRequestException('No users found');
+  //   }
+  //   return users;
+  // }
 
-  async getAllUsersOfApp() {
-    console.log("query")
-    try {
-      const totalUsers = await this.authModel.find();
-      console.log('nameExist', totalUsers);
-      return totalUsers
-    } catch (error) {
-      console.log(error);
-      throw [404, error.message];
-    }
-  }
+  // async getAllUsersOfApp() {
+  //   console.log("query")
+  //   try {
+  //     const totalUsers = await this.authModel.find();
+  //     console.log('nameExist', totalUsers);
+  //     return totalUsers
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw [404, error.message];
+  //   }
+  // }
 
   /*************************************** get single user  ****************************************************/
-  async getSingleUser(userId: string) {
-    const user = await this.authModel.findById(userId);
-    console.log('user', user);
-    return user;
-  }
+  // async getSingleUser(userId: string) {
+  //   const user = await this.authModel.findById(userId);
+  //   console.log('user', user);
+  //   return user;
+  // }
   
   /*************************************** signup ****************************************************/
   async signup(req) {
     console.log('req', req);
-    const user = await this.authModel.findOne(req);
-    return user
+    const user = new this.authModel(req);
+    return await user.save();
+
   }
   /*************************************** signin ****************************************************/
   async signin(email, pass) {
     try {
-      try {
-        const userExist = await (
-          await this.authModel.findOne({ email })
-        )
-        if (!userExist) {
-          console.log('not exist');
-          throw new NotFoundException('User Does not Exist');
-        } else {
-          const userExist = await (
-            await this.authModel.findOne({ email })
-          ).populate('orgId');
-          if (!bcrypt.compareSync(pass, userExist.hash)) {
-            console.log('wrong password');
-            throw new NotFoundException('Wrong Password');
-          }
-          const token = jwt.sign({ email: userExist.email }, 'secret', {
-            expiresIn: '1h',
-          });
-  
-          const user = {
-            userExist,
-            token,
-          };
-          console.log(user);
-          return user;
-        }
-
-       
-      } catch (error) {
-        console.log('LOGIN ERROR', error);
-        if (error.error === 'Not Found') {
-          throw new NotFoundException(error.error);
-        } else {
-          throw new NotFoundException(error.message);
-        }
-      }
+      const userExist = await (
+        await this.authModel.findOne({ email })
+      )
+      return userExist;
     } catch (error) {
       throw new NotFoundException(error.message);
     }
   }
 
   /*************************** forget password ***********************/
-  async forgetPassword(email) {
-    let result = await this.authModel.findOne({ email });
+  // async forgetPassword(email) {
+  //   let result = await this.authModel.findOne({ email });
 //     console.log('email----', result);
 //     if (Object.keys(result).length == 0) {
 //       console.log('Invalid Email');
@@ -464,42 +433,42 @@ export class AuthService {
 //       },
 //       HttpStatus.OK,
 //     );
-  }
+  // }
 
   /*************************** Update Password ***************************/
-  async updatePassword(email, password, newPassword) {
-    console.log('params', email, password, newPassword);
-    let user = await this.authModel.findOne({ email });
-    console.log(user);
-    if (user) {
-      let passwordMatched = await bcrypt.compareSync(password, user.hash);
-      let hashedPassword = await bcrypt.hashSync(newPassword, 8);
+  // async updatePassword(email, password, newPassword) {
+  //   console.log('params', email, password, newPassword);
+  //   let user = await this.authModel.findOne({ email });
+  //   console.log(user);
+  //   if (user) {
+  //     let passwordMatched = await bcrypt.compareSync(password, user.hash);
+  //     let hashedPassword = await bcrypt.hashSync(newPassword, 8);
 
-      if (passwordMatched) {
-        await this.authModel.findOneAndUpdate(
-          { email },
-          { hash: hashedPassword },
-        );
-        throw new HttpException(
-          {
-            status: HttpStatus.OK,
-            msg: 'Password Changed Successfully',
-          },
-          HttpStatus.OK,
-        );
-      } else {
-        throw new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            error: 'Incorrect password',
-          },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-    } else {
-      throw new NotFoundException('user not found');
-    }
-  }
+  //     if (passwordMatched) {
+  //       await this.authModel.findOneAndUpdate(
+  //         { email },
+  //         { hash: hashedPassword },
+  //       );
+  //       throw new HttpException(
+  //         {
+  //           status: HttpStatus.OK,
+  //           msg: 'Password Changed Successfully',
+  //         },
+  //         HttpStatus.OK,
+  //       );
+  //     } else {
+  //       throw new HttpException(
+  //         {
+  //           status: HttpStatus.BAD_REQUEST,
+  //           error: 'Incorrect password',
+  //         },
+  //         HttpStatus.BAD_REQUEST,
+  //       );
+  //     }
+  //   } else {
+  //     throw new NotFoundException('user not found');
+  //   }
+  // }
 
   // /*************************** update User ***************************/
   // async updateUserData({ email, firstName, lastName, password }) {
@@ -532,50 +501,50 @@ export class AuthService {
   // }
 
   /*************************** Edit user Profile ***************************/
-  async editProfile(userId, userData) {
-    let updatedUser;
-    let response;
-    try {
-      updatedUser = await this.authModel.findOne({
-        _id: userId,
-      });
-    } catch (err) {
-      throw new NotFoundException('User does not exist');
-    }
-    console.log('updatedUser', updatedUser);
-    const newUser = {
-      ...updatedUser._doc,
-      ...userData,
-    };
+  // async editProfile(userId, userData) {
+  //   let updatedUser;
+  //   let response;
+  //   try {
+  //     updatedUser = await this.authModel.findOne({
+  //       _id: userId,
+  //     });
+  //   } catch (err) {
+  //     throw new NotFoundException('User does not exist');
+  //   }
+  //   console.log('updatedUser', updatedUser);
+  //   const newUser = {
+  //     ...updatedUser._doc,
+  //     ...userData,
+  //   };
 
-    if (userData?.password) {
-      newUser.hash = await bcrypt.hashSync(userData.password, 8);
-    }
+  //   if (userData?.password) {
+  //     newUser.hash = await bcrypt.hashSync(userData.password, 8);
+  //   }
 
-    try {
-      response = await (
-        await this.authModel.findOneAndUpdate({ _id: userId }, newUser, {
-          new: true,
-          upsert: true,
-          setDefaultsOnInsert: true,
-        })
-      ).populate('orgId');
-    } catch (err) {
-      throw new NotFoundException('User not Found');
-    }
+  //   try {
+  //     response = await (
+  //       await this.authModel.findOneAndUpdate({ _id: userId }, newUser, {
+  //         new: true,
+  //         upsert: true,
+  //         setDefaultsOnInsert: true,
+  //       })
+  //     ).populate('orgId');
+  //   } catch (err) {
+  //     throw new NotFoundException('User not Found');
+  //   }
 
-    console.log('response', response);
-    const user = {
-      userExist: response,
-    };
-    console.log('user', user);
+  //   console.log('response', response);
+  //   const user = {
+  //     userExist: response,
+  //   };
+  //   console.log('user', user);
 
-    return user;
-  }
+  //   return user;
+  // }
 
   /*************************** add user via email ***********************/
-  async addUserViaEmail(email, orgId) {
-    let result;
+  // async addUserViaEmail(email, orgId) {
+  //   let result;
   //   // try {
   //   const userExist = await this.authModel.findOne({ email });
   //   // if (userExist) {
@@ -932,37 +901,37 @@ export class AuthService {
   //   // }
 
   //   // return { result, message: 'Registeration link sent to your email' };
-    return { message: 'Registeration link sent to your email' };
-  }
+  //   return { message: 'Registeration link sent to your email' };
+  // }
 
   /*************************************** reset password ****************************************************/
-  async resetPassword(email, pass) {
-    console.log('email', email, pass);
-    const userExist = await this.authModel.findOne({ email }).exec();
-    console.log('userExist', userExist);
-    if (!userExist) {
-      console.log('not exist');
-      throw new NotFoundException('User Does not Exist');
-    }
+  // async resetPassword(email, pass) {
+  //   console.log('email', email, pass);
+  //   const userExist = await this.authModel.findOne({ email }).exec();
+  //   console.log('userExist', userExist);
+  //   if (!userExist) {
+  //     console.log('not exist');
+  //     throw new NotFoundException('User Does not Exist');
+  //   }
 
-    if (userExist) {
-      let hashedPassword = await bcrypt.hashSync(pass, 8);
+  //   if (userExist) {
+  //     let hashedPassword = await bcrypt.hashSync(pass, 8);
 
-      await this.authModel.findOneAndUpdate(
-        { email },
-        { hash: hashedPassword },
-      );
-      throw new HttpException(
-        {
-          status: HttpStatus.OK,
-          msg: 'Password Changed Successfully',
-        },
-        HttpStatus.OK,
-      );
-    } else {
-      throw new NotFoundException('user not found');
-    }
-  }
+  //     await this.authModel.findOneAndUpdate(
+  //       { email },
+  //       { hash: hashedPassword },
+  //     );
+  //     throw new HttpException(
+  //       {
+  //         status: HttpStatus.OK,
+  //         msg: 'Password Changed Successfully',
+  //       },
+  //       HttpStatus.OK,
+  //     );
+  //   } else {
+  //     throw new NotFoundException('user not found');
+  //   }
+  // }
 
  
   

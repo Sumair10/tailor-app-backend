@@ -19,15 +19,6 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async getAllUsersOfApp() {
-        console.log("inside");
-        const result = await this.authService.getAllUsersOfApp();
-        return result;
-    }
-    async getAllUsersByOrgId(orgId) {
-        const users = await this.authService.getAllUsersByOrgId(orgId);
-        return users;
-    }
     async signup(request) {
         console.log('request', request.body);
         try {
@@ -42,50 +33,7 @@ let AuthController = class AuthController {
         const res = await this.authService.signin(email, password);
         return res;
     }
-    async forgetPassword(email) {
-        const result = await this.authService.forgetPassword(email.toLowerCase());
-        return result;
-    }
-    async updatePassword(email, password, newPassword) {
-        const result = await this.authService.updatePassword(email.toLowerCase(), password, newPassword);
-        return result;
-    }
-    async addUserViaEmail(email, organizationId) {
-        try {
-            const result = await this.authService.addUserViaEmail(email.toLowerCase(), organizationId);
-            return result;
-        }
-        catch (error) {
-            return error;
-        }
-    }
-    async resetPassword(email, password) {
-        const result = await this.authService.resetPassword(email.toLowerCase(), password);
-        return result;
-    }
-    async editProfile(userId, userData) {
-        const result = await this.authService.editProfile(userId, userData);
-        return result;
-    }
-    async getSingleUser(userId) {
-        console.log('hello', userId);
-        const user = await this.authService.getSingleUser(userId);
-        return user;
-    }
 };
-__decorate([
-    (0, common_1.Get)('/getAllUsersOfApp'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "getAllUsersOfApp", null);
-__decorate([
-    (0, common_1.Get)('all/:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "getAllUsersByOrgId", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Req)()),
@@ -101,53 +49,6 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
-__decorate([
-    (0, common_1.Post)('forgetPassword'),
-    __param(0, (0, common_1.Body)('email')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "forgetPassword", null);
-__decorate([
-    (0, common_1.Post)('updatePassword'),
-    __param(0, (0, common_1.Body)('email')),
-    __param(1, (0, common_1.Body)('password')),
-    __param(2, (0, common_1.Body)('newPassword')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "updatePassword", null);
-__decorate([
-    (0, common_1.Post)('addUserViaEmail'),
-    __param(0, (0, common_1.Body)('email')),
-    __param(1, (0, common_1.Body)('organizationId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "addUserViaEmail", null);
-__decorate([
-    (0, common_1.Post)('resetPassword'),
-    __param(0, (0, common_1.Body)('email')),
-    __param(1, (0, common_1.Body)('newPassword')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "resetPassword", null);
-__decorate([
-    (0, common_1.Patch)('updateUserData'),
-    __param(0, (0, common_1.Body)("id")),
-    __param(1, (0, common_1.Body)("userData")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "editProfile", null);
-__decorate([
-    (0, common_1.Get)('/:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "getSingleUser", null);
 AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

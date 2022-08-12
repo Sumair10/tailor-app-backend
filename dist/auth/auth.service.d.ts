@@ -28,29 +28,10 @@ export declare class AuthService {
     private readonly authModel;
     private readonly OrgService;
     constructor(authModel: Model<Auth>, OrgService: OrgService);
-    getAllUsersByOrgId(orgId: any): Promise<any>;
-    getAllUsersOfApp(): Promise<(import("mongoose").Document<unknown, any, Auth> & Auth & {
-        _id: import("mongoose").Types.ObjectId;
-    })[]>;
-    getSingleUser(userId: string): Promise<import("mongoose").Document<unknown, any, Auth> & Auth & {
-        _id: import("mongoose").Types.ObjectId;
-    }>;
     signup(req: any): Promise<import("mongoose").Document<unknown, any, Auth> & Auth & {
         _id: import("mongoose").Types.ObjectId;
     }>;
-    signin(email: any, pass: any): Promise<{
-        userExist: import("mongoose").Document<unknown, any, Auth> & Auth & {
-            _id: import("mongoose").Types.ObjectId;
-        };
-        token: any;
+    signin(email: any, pass: any): Promise<import("mongoose").Document<unknown, any, Auth> & Auth & {
+        _id: import("mongoose").Types.ObjectId;
     }>;
-    forgetPassword(email: any): Promise<void>;
-    updatePassword(email: any, password: any, newPassword: any): Promise<void>;
-    editProfile(userId: any, userData: any): Promise<{
-        userExist: any;
-    }>;
-    addUserViaEmail(email: any, orgId: any): Promise<{
-        message: string;
-    }>;
-    resetPassword(email: any, pass: any): Promise<void>;
 }

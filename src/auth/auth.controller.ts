@@ -15,20 +15,20 @@ import { Request } from 'express';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-  @Get('/getAllUsersOfApp')
-  async getAllUsersOfApp() {
-    console.log("inside")
-    const result = await this.authService.getAllUsersOfApp();
-    return result;
-  }
+  // @Get('/getAllUsersOfApp')
+  // async getAllUsersOfApp() {
+  //   console.log("inside")
+  //   const result = await this.authService.getAllUsersOfApp();
+  //   return result;
+  // }
 
   
   
-  @Get('all/:id')
-  async getAllUsersByOrgId(@Param ('id') orgId: string) {
-    const users = await this.authService.getAllUsersByOrgId(orgId);
-    return users;
-  }
+  // @Get('all/:id')
+  // async getAllUsersByOrgId(@Param ('id') orgId: string) {
+  //   const users = await this.authService.getAllUsersByOrgId(orgId);
+  //   return users;
+  // }
 
   @Post()
   async signup(@Req() request: Request) {
@@ -50,25 +50,25 @@ export class AuthController {
     return res;
   }
 
-  @Post('forgetPassword')
-  async forgetPassword(@Body('email') email: string) {
-    const result = await this.authService.forgetPassword(email.toLowerCase());
-    return result;
-  }
+  // @Post('forgetPassword')
+  // async forgetPassword(@Body('email') email: string) {
+  //   const result = await this.authService.forgetPassword(email.toLowerCase());
+  //   return result;
+  // }
 
-  @Post('updatePassword')
-  async updatePassword(
-    @Body('email') email: string,
-    @Body('password') password: string,
-    @Body('newPassword') newPassword: string,
-  ) {
-    const result = await this.authService.updatePassword(
-      email.toLowerCase(),
-      password,
-      newPassword,
-    );
-    return result;
-  }
+  // @Post('updatePassword')
+  // async updatePassword(
+  //   @Body('email') email: string,
+  //   @Body('password') password: string,
+  //   @Body('newPassword') newPassword: string,
+  // ) {
+  //   const result = await this.authService.updatePassword(
+  //     email.toLowerCase(),
+  //     password,
+  //     newPassword,
+  //   );
+  //   return result;
+  // }
 
   // @Post('updateUserData')
   // async updateUserData(@Req() request: Request) {
@@ -76,49 +76,49 @@ export class AuthController {
   //   return result;
   // }
 
-  @Post('addUserViaEmail')
-  async addUserViaEmail(
-    @Body('email') email: string,
-    @Body('organizationId') organizationId: string,
-  ) {
-    try {
-      const result = await this.authService.addUserViaEmail(
-        email.toLowerCase(),
-        organizationId,
-      );
-      return result;
-    } catch (error) {
-      return error;
-    }
-  }
+  // @Post('addUserViaEmail')
+  // async addUserViaEmail(
+  //   @Body('email') email: string,
+  //   @Body('organizationId') organizationId: string,
+  // ) {
+  //   try {
+  //     const result = await this.authService.addUserViaEmail(
+  //       email.toLowerCase(),
+  //       organizationId,
+  //     );
+  //     return result;
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
 
-  @Post('resetPassword')
-  async resetPassword(
-    @Body('email') email: string,
-    @Body('newPassword') password: string,
-  ) {
-    const result = await this.authService.resetPassword(
-      email.toLowerCase(),
-      password,
-    );
-    return result;
-  }
+  // @Post('resetPassword')
+  // async resetPassword(
+  //   @Body('email') email: string,
+  //   @Body('newPassword') password: string,
+  // ) {
+  //   const result = await this.authService.resetPassword(
+  //     email.toLowerCase(),
+  //     password,
+  //   );
+  //   return result;
+  // }
 
-  @Patch('updateUserData')
-  async editProfile(@Body("id") userId: String, @Body("userData") userData) {
-    const result = await this.authService.editProfile(userId, userData);
-    return result;
-  }
+  // @Patch('updateUserData')
+  // async editProfile(@Body("id") userId: String, @Body("userData") userData) {
+  //   const result = await this.authService.editProfile(userId, userData);
+  //   return result;
+  // }
 
 
-  @Get('/:id')
-  async getSingleUser(@Param('id') userId: string) {
-    console.log('hello', userId);
-    const user = await this.authService.getSingleUser(userId);
-    return user;
+  // @Get('/:id')
+  // async getSingleUser(@Param('id') userId: string) {
+  //   console.log('hello', userId);
+  //   const user = await this.authService.getSingleUser(userId);
+  //   return user;
   
   
-  }
+  // }
  
 
 }
