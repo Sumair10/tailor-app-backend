@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 export declare const MeasurementSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, any, {}, "type", {
-    customer_name: string;
+    customer: mongoose.Schema.Types.ObjectId;
+    shop: mongoose.Schema.Types.ObjectId;
     code?: string;
     active?: string;
     price?: string;
@@ -8,7 +9,8 @@ export declare const MeasurementSchema: mongoose.Schema<any, mongoose.Model<any,
     measurements?: unknown[];
 }>;
 export interface Measurement {
-    customer_name: string;
+    customer: string;
+    shop: string;
     code: string;
     active: string;
     price_date: string;

@@ -4,20 +4,20 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { OrgService } from 'src/organization/organization.service';
-import { OrgModule } from 'src/organization/organization.module';
+import { ShopModule } from 'src/shop/shop.module';
+import {ShopSchema} from 'src/shop/shop.schema'
 
 @Module({
   imports: [
-    OrgModule,
+    ShopModule,
     MongooseModule.forFeature([
       {
         name: 'Auth',
         schema: AuthSchema,
       },
       {
-        name: 'Organization',
-        schema: OrgSchema,
+        name: 'Shop',
+        schema: ShopSchema,
       },
     ]),
   ],

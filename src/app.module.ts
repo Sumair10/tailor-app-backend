@@ -13,6 +13,7 @@ import { OrderModule } from './order/order.module';
 import { CustomerModule } from './customer/customer.module';
 import { MeasurementModule } from './measurement/measurement.module';
 import { EmployeeModule } from './employee/employee.module';
+import { ShopModule } from './shop/shop.module';
 
 require('dotenv').config({ path: './.env' });
 
@@ -43,6 +44,7 @@ require('dotenv').config({ path: './.env' });
     MeasurementModule,
     EmployeeModule,
     AuthModule,
+    ShopModule,
     MongooseModule.forRoot(process.env.MONGO_URI, {
       useNewUrlParser: true,
     }),

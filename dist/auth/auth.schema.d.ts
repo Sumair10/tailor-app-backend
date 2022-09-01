@@ -3,9 +3,11 @@ export declare const AuthSchema: mongoose.Schema<any, mongoose.Model<any, any, a
     name: string;
     email: string;
     password: string;
+    shopId: mongoose.Schema.Types.ObjectId;
 }>;
 export interface Auth {
     name: string;
     email: string;
     password: string;
+    shopId: string;
 }

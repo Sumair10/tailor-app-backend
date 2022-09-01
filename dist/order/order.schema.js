@@ -4,11 +4,11 @@ exports.OrderSchema = void 0;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 exports.OrderSchema = new mongoose.Schema({
-    customer_name: { type: String, required: true },
+    customer: { type: Schema.Types.ObjectId, ref: 'Customer', required: true },
+    assign_to: { type: Schema.Types.ObjectId, ref: 'Employee', required: true },
     delivery_date: { type: Date },
     order_status: { type: String },
     reference: { type: String },
-    assign_to: { type: String },
     priority: { type: String },
     services: { type: String },
     taxes: { type: String },

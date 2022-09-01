@@ -23,15 +23,18 @@
 /// <reference types="mongoose/types/inferschematype" />
 import { Model } from 'mongoose';
 import { Auth } from './auth.schema';
-import { OrgService } from 'src/organization/organization.service';
+import { ShopService } from 'src/shop/shop.service';
 export declare class AuthService {
     private readonly authModel;
-    private readonly OrgService;
-    constructor(authModel: Model<Auth>, OrgService: OrgService);
+    private readonly ShopService;
+    constructor(authModel: Model<Auth>, ShopService: ShopService);
     signup(req: any): Promise<import("mongoose").Document<unknown, any, Auth> & Auth & {
         _id: import("mongoose").Types.ObjectId;
     }>;
     signin(email: any, pass: any): Promise<import("mongoose").Document<unknown, any, Auth> & Auth & {
         _id: import("mongoose").Types.ObjectId;
+    }>;
+    editProfile(userId: any, userData: any): Promise<{
+        userExist: any;
     }>;
 }

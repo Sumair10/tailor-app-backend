@@ -16,9 +16,14 @@ exports.MeasurementService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const shop_service_1 = require("../shop/shop.service");
+const customer_service_1 = require("../customer/customer.service");
+const shop_schema_1 = require("../shop/shop.schema");
 let MeasurementService = class MeasurementService {
-    constructor(measurementModel) {
+    constructor(measurementModel, ShopService, CustomerService) {
         this.measurementModel = measurementModel;
+        this.ShopService = ShopService;
+        this.CustomerService = CustomerService;
     }
     async createMeasurement(req) {
         const newMeasurement = new this.measurementModel(req);
@@ -42,7 +47,9 @@ let MeasurementService = class MeasurementService {
 MeasurementService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('Measurement')),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __metadata("design:paramtypes", [mongoose_2.Model,
+        shop_service_1.ShopService,
+        customer_service_1.CustomerService])
 ], MeasurementService);
 exports.MeasurementService = MeasurementService;
 //# sourceMappingURL=measurement.service.js.map

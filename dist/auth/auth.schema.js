@@ -7,5 +7,6 @@ exports.AuthSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    shopId: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
 });
 //# sourceMappingURL=auth.schema.js.map

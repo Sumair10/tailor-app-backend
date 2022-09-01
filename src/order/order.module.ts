@@ -5,11 +5,27 @@ import { Module } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
 import { OrderSchema } from './order.schema';
+import { EmployeeSchema } from 'src/employee/employee.schema';
+import { CustomerModule } from 'src/customer/customer.module';
+import { EmployeeModule } from 'src/employee/employee.module';
+import { CustomerService } from 'src/customer/customer.service';
+import { EmployeeService } from 'src/employee/employee.service';
+import { CustomerSchema } from 'src/customer/customer.schema';
 
 @Module({
   imports: [
+    EmployeeModule,
+    CustomerModule,
     MongooseModule.forFeature([
       { name: 'Order', schema: OrderSchema},
+      {
+        name: 'Customer',
+        schema: CustomerSchema,
+      },
+      {
+        name: 'Employee',
+        schema: EmployeeSchema,
+      },
       // { name: 'Organization', schema: OrgSchema },
       // { name: 'Auth', schema: AuthSchema },
       // { name: 'Models', schema: ModelsSchema },

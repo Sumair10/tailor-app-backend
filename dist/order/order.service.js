@@ -16,12 +16,26 @@ exports.OrderService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const customer_service_1 = require("../customer/customer.service");
+const employee_service_1 = require("../employee/employee.service");
+const customer_module_1 = require("../customer/customer.module");
+const customer_schema_1 = require("../customer/customer.schema");
+const employee_schema_1 = require("../employee/employee.schema");
 let OrderService = class OrderService {
-    constructor(orderModel) {
+    constructor(orderModel, customerModel, employeeModel) {
         this.orderModel = orderModel;
+        this.customerModel = customerModel;
+        this.employeeModel = employeeModel;
     }
     async createOrder(req) {
-        const newOrder = new this.orderModel(req);
+        let customer;
+        let employee;
+        console.log('new', req);
+        customer = await this.customerModel.findOne({ customer_email: req.customer_email });
+        console.log('new', customer);
+        employee = await this.employeeModel.findOne({ email: req.assign_to });
+        console.log('new', employee);
+        const newOrder = new this.orderModel(Object.assign(Object.assign({}, req), { customer: customer._id, assign_to: employee._id }));
         console.log('new model : ', newOrder);
         return await newOrder.save();
     }
@@ -42,7 +56,11 @@ let OrderService = class OrderService {
 OrderService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('Order')),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __param(1, (0, mongoose_1.InjectModel)('Customer')),
+    __param(2, (0, mongoose_1.InjectModel)('Employee')),
+    __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model,
+        mongoose_2.Model])
 ], OrderService);
 exports.OrderService = OrderService;
 //# sourceMappingURL=order.service.js.map

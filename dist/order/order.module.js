@@ -12,13 +12,29 @@ const common_1 = require("@nestjs/common");
 const order_service_1 = require("./order.service");
 const order_controller_1 = require("./order.controller");
 const order_schema_1 = require("./order.schema");
+const employee_schema_1 = require("../employee/employee.schema");
+const customer_module_1 = require("../customer/customer.module");
+const employee_module_1 = require("../employee/employee.module");
+const customer_service_1 = require("../customer/customer.service");
+const employee_service_1 = require("../employee/employee.service");
+const customer_schema_1 = require("../customer/customer.schema");
 let OrderModule = class OrderModule {
 };
 OrderModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            employee_module_1.EmployeeModule,
+            customer_module_1.CustomerModule,
             mongoose_1.MongooseModule.forFeature([
                 { name: 'Order', schema: order_schema_1.OrderSchema },
+                {
+                    name: 'Customer',
+                    schema: customer_schema_1.CustomerSchema,
+                },
+                {
+                    name: 'Employee',
+                    schema: employee_schema_1.EmployeeSchema,
+                },
             ]),
         ],
         controllers: [order_controller_1.OrderController],

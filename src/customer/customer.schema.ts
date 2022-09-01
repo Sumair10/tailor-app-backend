@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export const CustomerSchema = new mongoose.Schema({
-  customer_name: { type: String, required: true},
+  customer_email: { type: String, required: true},
   phone: { type: String},
   email: { type: String},
   birth_date : { type: String},
@@ -12,7 +12,7 @@ export const CustomerSchema = new mongoose.Schema({
 });
 
 export interface Customer {
-  customer_name: string;
+  customer_email: string;
   phone : string;
   email : string;
   birth_date : string;

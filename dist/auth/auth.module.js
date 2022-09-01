@@ -7,28 +7,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
-const organization_schema_1 = require("./../organization/organization.schema");
 const auth_schema_1 = require("./auth.schema");
 const mongoose_1 = require("@nestjs/mongoose");
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
-const organization_service_1 = require("../organization/organization.service");
-const organization_module_1 = require("../organization/organization.module");
+const shop_module_1 = require("../shop/shop.module");
+const shop_schema_1 = require("../shop/shop.schema");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            organization_module_1.OrgModule,
+            shop_module_1.ShopModule,
             mongoose_1.MongooseModule.forFeature([
                 {
                     name: 'Auth',
                     schema: auth_schema_1.AuthSchema,
                 },
                 {
-                    name: 'Organization',
-                    schema: organization_schema_1.OrgSchema,
+                    name: 'Shop',
+                    schema: shop_schema_1.ShopSchema,
                 },
             ]),
         ],

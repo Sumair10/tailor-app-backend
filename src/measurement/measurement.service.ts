@@ -8,14 +8,21 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Measurement } from './measurement.schema';
+import { ShopService } from 'src/shop/shop.service';
+import { CustomerService } from 'src/customer/customer.service';
+import { Shop } from 'src/shop/shop.schema';
 
 @Injectable()
 export class MeasurementService {
   constructor(
     @InjectModel('Measurement') private readonly measurementModel: Model<Measurement>,
+    private readonly ShopService: ShopService,
+    private readonly CustomerService: CustomerService,
   ) {}
   /*************************** create a folder ***************************/
   async createMeasurement(req): Promise<any> {
+
+  
   
       const newMeasurement = new this.measurementModel(req);
       console.log('new model : ', newMeasurement);

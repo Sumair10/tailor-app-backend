@@ -13,6 +13,7 @@ import { Customer } from './customer.schema';
 export class CustomerService {
   constructor(
     @InjectModel('Customer') private readonly customerModel: Model<Customer>,
+    
   ) {}
   /*************************** create a folder ***************************/
   async createCustomer(req): Promise<any> {

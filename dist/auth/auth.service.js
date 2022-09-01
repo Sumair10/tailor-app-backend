@@ -18,16 +18,30 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const organization_schema_1 = require("../organization/organization.schema");
-const organization_service_1 = require("../organization/organization.service");
+const shop_service_1 = require("../shop/shop.service");
+const shop_schema_1 = require("../shop/shop.schema");
 let AuthService = class AuthService {
-    constructor(authModel, OrgService) {
+    constructor(authModel, ShopService) {
         this.authModel = authModel;
-        this.OrgService = OrgService;
+        this.ShopService = ShopService;
     }
     async signup(req) {
+        let newShop;
         console.log('req', req);
-        const user = new this.authModel(req);
+        if (req.shopName) {
+            let Shop = {
+                name: req.shopName,
+            };
+            newShop = await this.ShopService.addShop(Shop);
+            console.log('newShop', newShop);
+            if (newShop.status == 'fail') {
+                throw new common_1.HttpException({
+                    status: common_1.HttpStatus.BAD_REQUEST,
+                    error: 'Organization name already exist',
+                }, common_1.HttpStatus.BAD_REQUEST);
+            }
+        }
+        const user = new this.authModel(Object.assign(Object.assign({}, req), { shopId: newShop.shop._id }));
         return await user.save();
     }
     async signin(email, pass) {
@@ -39,12 +53,45 @@ let AuthService = class AuthService {
             throw new common_1.NotFoundException(error.message);
         }
     }
+    async editProfile(userId, userData) {
+        let updatedUser;
+        let response;
+        try {
+            updatedUser = await this.authModel.findOne({
+                _id: userId,
+            });
+        }
+        catch (err) {
+            throw new common_1.NotFoundException('User does not exist');
+        }
+        console.log('updatedUser', updatedUser);
+        const newUser = Object.assign(Object.assign({}, updatedUser._doc), userData);
+        if (userData === null || userData === void 0 ? void 0 : userData.password) {
+            newUser.hash = await bcrypt.hashSync(userData.password, 8);
+        }
+        try {
+            response = await (await this.authModel.findOneAndUpdate({ _id: userId }, newUser, {
+                new: true,
+                upsert: true,
+                setDefaultsOnInsert: true,
+            })).populate('shopId');
+        }
+        catch (err) {
+            throw new common_1.NotFoundException('User not Found');
+        }
+        console.log('response', response);
+        const user = {
+            userExist: response,
+        };
+        console.log('user', user);
+        return user;
+    }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('Auth')),
     __metadata("design:paramtypes", [mongoose_2.Model,
-        organization_service_1.OrgService])
+        shop_service_1.ShopService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

@@ -50,6 +50,12 @@ export class AuthController {
     return res;
   }
 
+  @Patch('updateUserData')
+  async editProfile(@Body("id") userId: String, @Body("userData") userData) {
+    const result = await this.authService.editProfile(userId, userData);
+    return result;
+  }
+
   // @Post('forgetPassword')
   // async forgetPassword(@Body('email') email: string) {
   //   const result = await this.authService.forgetPassword(email.toLowerCase());

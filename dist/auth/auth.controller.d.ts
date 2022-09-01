@@ -32,4 +32,7 @@ export declare class AuthController {
     login(email: string, password: string): Promise<import("mongoose").Document<unknown, any, Auth> & Auth & {
         _id: import("mongoose").Types.ObjectId;
     }>;
+    editProfile(userId: String, userData: any): Promise<{
+        userExist: any;
+    }>;
 }

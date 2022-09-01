@@ -4,7 +4,7 @@ exports.CustomerSchema = void 0;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 exports.CustomerSchema = new mongoose.Schema({
-    customer_name: { type: String, required: true },
+    customer_email: { type: String, required: true },
     phone: { type: String },
     email: { type: String },
     birth_date: { type: String },

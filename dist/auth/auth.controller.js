@@ -33,6 +33,10 @@ let AuthController = class AuthController {
         const res = await this.authService.signin(email, password);
         return res;
     }
+    async editProfile(userId, userData) {
+        const result = await this.authService.editProfile(userId, userData);
+        return result;
+    }
 };
 __decorate([
     (0, common_1.Post)(),
@@ -49,6 +53,14 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Patch)('updateUserData'),
+    __param(0, (0, common_1.Body)("id")),
+    __param(1, (0, common_1.Body)("userData")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "editProfile", null);
 AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

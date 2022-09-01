@@ -7,17 +7,34 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CustomerService } from 'src/customer/customer.service';
+import { EmployeeService } from 'src/employee/employee.service';
 import { Order } from './order.schema';
+import { CustomerModule } from 'src/customer/customer.module';
+import { Customer } from 'src/customer/customer.schema';
+import { Employee } from 'src/employee/employee.schema';
 
 @Injectable()
 export class OrderService {
   constructor(
     @InjectModel('Order') private readonly orderModel: Model<Order>,
+    @InjectModel('Customer') private readonly customerModel: Model<Customer>,
+    @InjectModel('Employee') private readonly employeeModel: Model<Employee>
+    // private readonly EmployeeService : EmployeeService,
   ) {}
   /*************************** create a folder ***************************/
   async createOrder(req): Promise<any> {
-  
-      const newOrder = new this.orderModel(req);
+    let customer
+    let employee
+
+    console.log('new', req);
+
+      customer = await this.customerModel.findOne({customer_email : req.customer_email})
+      console.log('new', customer);
+      employee = await this.employeeModel.findOne({email : req.assign_to})
+      console.log('new', employee);
+    
+      const newOrder = new this.orderModel({...req , customer : customer._id , assign_to : employee._id});
       console.log('new model : ', newOrder);
       return await newOrder.save();
     

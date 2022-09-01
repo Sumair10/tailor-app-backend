@@ -10,16 +10,15 @@ import { Model } from 'mongoose';
 import { Auth } from './auth.schema';
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-// import { MailerService } from '@nestjs-modules/mailer';
-import { Org } from 'src/organization/organization.schema';
-import { OrgService } from 'src/organization/organization.service';
+import { ShopService } from 'src/shop/shop.service';
+import { Shop } from 'src/shop/shop.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel('Auth') private readonly authModel: Model<Auth>,
     // private readonly mailerService: MailerService,
-    private readonly OrgService: OrgService,
+    private readonly ShopService: ShopService,
   ) {}
 
   /*************************** get all users of partical organization ***************************/
@@ -58,8 +57,27 @@ export class AuthService {
   
   /*************************************** signup ****************************************************/
   async signup(req) {
+    let newShop;
+
     console.log('req', req);
-    const user = new this.authModel(req);
+    if (req.shopName) {
+      let Shop: Shop = {
+        name: req.shopName,
+      };
+      newShop = await this.ShopService.addShop(Shop);
+      console.log('newShop', newShop);
+      if (newShop.status == 'fail') {
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'Organization name already exist',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+
+    const user = new this.authModel({ ...req,shopId: newShop.shop._id });
     return await user.save();
 
   }
@@ -74,6 +92,49 @@ export class AuthService {
       throw new NotFoundException(error.message);
     }
   }
+
+
+  async editProfile(userId, userData) {
+    let updatedUser;
+    let response;
+    try {
+      updatedUser = await this.authModel.findOne({
+        _id: userId,
+      });
+    } catch (err) {
+      throw new NotFoundException('User does not exist');
+    }
+    console.log('updatedUser', updatedUser);
+    const newUser = {
+      ...updatedUser._doc,
+      ...userData,
+    };
+
+    if (userData?.password) {
+      newUser.hash = await bcrypt.hashSync(userData.password, 8);
+    }
+
+    try {
+      response = await (
+        await this.authModel.findOneAndUpdate({ _id: userId }, newUser, {
+          new: true,
+          upsert: true,
+          setDefaultsOnInsert: true,
+        })
+      ).populate('shopId');
+    } catch (err) {
+      throw new NotFoundException('User not Found');
+    }
+
+    console.log('response', response);
+    const user = {
+      userExist: response,
+    };
+    console.log('user', user);
+
+    return user;
+  }
+
 
   /*************************** forget password ***********************/
   // async forgetPassword(email) {

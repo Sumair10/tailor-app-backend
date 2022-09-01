@@ -2,7 +2,8 @@ import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export const MeasurementSchema = new mongoose.Schema({
-  customer_name: { type: String, required: true},
+  customer: { type: Schema.Types.ObjectId, ref: 'Customer',required: true },
+  shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
   code: { type: String},
   active: { type: String},
   price : { type: String},
@@ -15,7 +16,8 @@ export const MeasurementSchema = new mongoose.Schema({
 });
 
 export interface Measurement {
-  customer_name: string;
+  customer: string;
+  shop: string;
   code : string;
   active : string;
   price_date : string;
