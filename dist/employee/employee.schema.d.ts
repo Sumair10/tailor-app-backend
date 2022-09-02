@@ -1,13 +1,14 @@
 import * as mongoose from 'mongoose';
 export declare const EmployeeSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, any, {}, "type", {
     employee_name: string;
-    phone?: string;
+    shop: mongoose.Schema.Types.ObjectId;
     email?: string;
+    phone?: string;
     birth_date?: string;
-    address?: string;
-    description?: string;
     salary?: string;
+    address?: string;
     password?: string;
+    description?: string;
     picture?: string;
 }>;
 export interface Employee {
@@ -20,4 +21,5 @@ export interface Employee {
     password: string;
     description: string;
     picture: string;
+    shop: string;
 }

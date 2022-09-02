@@ -23,6 +23,14 @@ let EmployeeController = class EmployeeController {
         console.log('req.body', req.body);
         return await this.employeeService.createEmployee(req.body);
     }
+    async getEmployee(employeeId) {
+        const result = await this.employeeService.getEmployee(employeeId);
+        return result;
+    }
+    async updateEmployee(employeeId, employeeData) {
+        const result = await this.employeeService.updateEmployee(employeeId, employeeData);
+        return result;
+    }
     async deleteEmployee(employeeId) {
         return await this.employeeService.deleteEmployee(employeeId);
     }
@@ -34,6 +42,21 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], EmployeeController.prototype, "createEmployee", null);
+__decorate([
+    (0, common_1.Get)('/getEmployee/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], EmployeeController.prototype, "getEmployee", null);
+__decorate([
+    (0, common_1.Patch)('updateEmployee'),
+    __param(0, (0, common_1.Body)("id")),
+    __param(1, (0, common_1.Body)("employeeData")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], EmployeeController.prototype, "updateEmployee", null);
 __decorate([
     (0, common_1.Delete)('/deleteEmployee/:id'),
     __param(0, (0, common_1.Param)('id')),

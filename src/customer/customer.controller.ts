@@ -21,6 +21,18 @@ export class CustomerController {
     return await this.customerService.createCustomer(req.body);
   }
 
+  @Get('/getCustomer/:id')
+  async getCustomer(@Param('id') customerId: string ) {
+    const result = await this.customerService.getCustomer(customerId);
+    return result;
+  }
+
+  @Patch('updateCustomer')
+  async updateCustomer(@Body("id") customerId: String, @Body("customerData") customerData) {
+    const result = await this.customerService.updateCustomer(customerId, customerData);
+    return result;
+  }
+
 
   @Delete('/deleteCustomer/:id')
   async deleteCustomer(@Param('id') customerId: string) {

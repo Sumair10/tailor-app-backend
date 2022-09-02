@@ -21,6 +21,17 @@ export class EmployeeController {
     return await this.employeeService.createEmployee(req.body);
   }
 
+  @Get('/getEmployee/:id')
+  async getEmployee(@Param('id') employeeId: string ) {
+    const result = await this.employeeService.getEmployee(employeeId);
+    return result;
+  }
+
+  @Patch('updateEmployee')
+  async updateEmployee(@Body("id") employeeId: String, @Body("employeeData") employeeData) {
+    const result = await this.employeeService.updateEmployee(employeeId, employeeData);
+    return result;
+  }
 
   @Delete('/deleteEmployee/:id')
   async deleteEmployee(@Param('id') employeeId: string) {

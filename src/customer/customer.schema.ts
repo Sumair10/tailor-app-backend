@@ -9,6 +9,9 @@ export const CustomerSchema = new mongoose.Schema({
   opening_balance : { type: String},
   address : { type: String},
   description : { type: String},
+  shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
+
+
 });
 
 export interface Customer {
@@ -19,4 +22,5 @@ export interface Customer {
   opening_balance : string;
   address : string;
   description : string;
+  shop : string;
 }

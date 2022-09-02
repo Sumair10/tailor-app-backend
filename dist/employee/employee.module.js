@@ -12,13 +12,20 @@ const common_1 = require("@nestjs/common");
 const employee_service_1 = require("./employee.service");
 const employee_controller_1 = require("./employee.controller");
 const employee_schema_1 = require("./employee.schema");
+const shop_module_1 = require("../shop/shop.module");
+const shop_schema_1 = require("../shop/shop.schema");
 let EmployeeModule = class EmployeeModule {
 };
 EmployeeModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            shop_module_1.ShopModule,
             mongoose_1.MongooseModule.forFeature([
                 { name: 'Employee', schema: employee_schema_1.EmployeeSchema },
+                {
+                    name: 'Shop',
+                    schema: shop_schema_1.ShopSchema,
+                },
             ]),
         ],
         controllers: [employee_controller_1.EmployeeController],

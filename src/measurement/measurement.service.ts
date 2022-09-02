@@ -11,22 +11,83 @@ import { Measurement } from './measurement.schema';
 import { ShopService } from 'src/shop/shop.service';
 import { CustomerService } from 'src/customer/customer.service';
 import { Shop } from 'src/shop/shop.schema';
+import { Customer } from 'src/customer/customer.schema';
 
 @Injectable()
 export class MeasurementService {
   constructor(
     @InjectModel('Measurement') private readonly measurementModel: Model<Measurement>,
-    private readonly ShopService: ShopService,
-    private readonly CustomerService: CustomerService,
+    @InjectModel('Customer') private readonly customerModel: Model<Customer>,
+    @InjectModel('Shop') private readonly shopModel: Model<Shop>
   ) {}
   /*************************** create a folder ***************************/
   async createMeasurement(req): Promise<any> {
+    let customer
+    let shop
 
+    console.log('new', req);
+
+      customer = await this.customerModel.findOne({customer_email : req.customer})
+      console.log('new', customer);
+      shop = await this.shopModel.findOne({name : req.shop})
+      console.log('new', shop);
   
   
-      const newMeasurement = new this.measurementModel(req);
+      const newMeasurement = new this.measurementModel({...req , customer : customer._id , shop : shop._id});
       console.log('new model : ', newMeasurement);
       return await newMeasurement.save();
+  }
+
+  async getMeasurement(measurementId: string): Promise<any> {
+    let measurement
+     if (measurementId.match(/^[0-9a-fA-F]{24}$/)) {
+      measurement = await this.measurementModel
+         .find({ _id: measurementId  })
+         .populate('shop')
+         .populate('customer');
+     } else {
+       throw new BadRequestException('Invalid measurement id');
+     }
+   
+     ////console.log('files', files);
+     return measurement;
+   }
+
+   async updateMeasurement(measurementId, measurementData) {
+    let updatedMeasurement;
+    let response;
+    try {
+      updatedMeasurement = await this.measurementModel.findOne({
+        _id: measurementId,
+      });
+    } catch (err) {
+      throw new NotFoundException('User does not exist');
+    }
+    console.log('updatedMeasurement', updatedMeasurement);
+    const newMeasurement = {
+      ...updatedMeasurement._doc,
+      ...measurementData,
+    };
+
+    try {
+      response = await (
+        await this.measurementModel.findOneAndUpdate(
+          { _id: measurementId },
+          newMeasurement,
+          {
+            new: true,
+            upsert: true,
+            setDefaultsOnInsert: true,
+          },
+        )
+      ).populate('shop');
+    } catch (err) {
+      throw new NotFoundException('measurement not Found');
+    }
+
+    console.log('response', response);
+
+    return response;
   }
 
    /*************************** delete a measurement ***************************/

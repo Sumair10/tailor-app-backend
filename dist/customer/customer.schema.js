@@ -11,5 +11,6 @@ exports.CustomerSchema = new mongoose.Schema({
     opening_balance: { type: String },
     address: { type: String },
     description: { type: String },
+    shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
 });
 //# sourceMappingURL=customer.schema.js.map

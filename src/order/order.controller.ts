@@ -21,6 +21,18 @@ export class OrderController {
     return await this.orderService.createOrder(req.body);
   }
 
+  @Get('/getOrder/:id')
+  async getOrder(@Param('id') orderId: string ) {
+    const result = await this.orderService.getOrder(orderId);
+    return result;
+  }
+
+  @Patch('updateOrder')
+  async updateOrder(@Body("id") orderId: String, @Body("orderData") orderData) {
+    const result = await this.orderService.updateOrder(orderId, orderData);
+    return result;
+  }
+
   @Delete('/deleteOrder/:id')
   async deleteOrder(@Param('id') orderId: string) {
     return await this.orderService.deleteOrder(orderId);

@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 export declare const CustomerSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, any, {}, "type", {
     customer_email: string;
+    shop: mongoose.Schema.Types.ObjectId;
     phone?: string;
     email?: string;
     birth_date?: string;
@@ -16,4 +17,5 @@ export interface Customer {
     opening_balance: string;
     address: string;
     description: string;
+    shop: string;
 }

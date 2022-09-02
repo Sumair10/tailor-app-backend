@@ -7,21 +7,76 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Shop } from 'src/shop/shop.schema';
 import { Customer } from './customer.schema';
 
 @Injectable()
 export class CustomerService {
   constructor(
     @InjectModel('Customer') private readonly customerModel: Model<Customer>,
-    
+    @InjectModel('Shop') private readonly shopModel: Model<Shop>,
   ) {}
   /*************************** create a folder ***************************/
   async createCustomer(req): Promise<any> {
-  
-      const newCustomer = new this.customerModel(req);
-      console.log('new model : ', newCustomer);
-      return await newCustomer.save();
+    let shop;
+    shop = await this.shopModel.findOne({ name: req.shop });
+    console.log('new', shop);
+    const newCustomer = new this.customerModel({ ...req, shop: shop });
+    console.log('new model : ', newCustomer);
+    return await newCustomer.save();
   }
+
+  async getCustomer(customerId: string): Promise<any> {
+    let customer;
+    if (customerId.match(/^[0-9a-fA-F]{24}$/)) {
+      customer = await this.customerModel
+        .find({ _id: customerId })
+        .populate('shop');
+    } else {
+      throw new BadRequestException('Invalid customer id');
+    }
+
+    ////console.log('files', files);
+    return customer;
+  }
+
+  async updateCustomer(customerId, customerData) {
+    let updatedCustomer;
+    let response;
+    try {
+      updatedCustomer = await this.customerModel.findOne({
+        _id: customerId,
+      });
+    } catch (err) {
+      throw new NotFoundException('User does not exist');
+    }
+    console.log('updatedCustomer', updatedCustomer);
+    const newCustomer = {
+      ...updatedCustomer._doc,
+      ...customerData,
+    };
+
+    try {
+      response = await (
+        await this.customerModel.findOneAndUpdate(
+          { _id: customerId },
+          newCustomer,
+          {
+            new: true,
+            upsert: true,
+            setDefaultsOnInsert: true,
+          },
+        )
+      ).populate('shop');
+    } catch (err) {
+      throw new NotFoundException('customer not Found');
+    }
+
+    console.log('response', response);
+
+    return response;
+  }
+
   async deleteCustomer(customerId: string): Promise<any> {
     let customer;
 

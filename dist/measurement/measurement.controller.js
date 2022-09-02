@@ -23,6 +23,14 @@ let MeasurementController = class MeasurementController {
         console.log('req.body', req.body);
         return await this.measurementService.createMeasurement(req.body);
     }
+    async getMeasurement(measurementId) {
+        const result = await this.measurementService.getMeasurement(measurementId);
+        return result;
+    }
+    async updateMeasurement(measurementId, measurementData) {
+        const result = await this.measurementService.updateMeasurement(measurementId, measurementData);
+        return result;
+    }
     async deleteMeasurement(measurementId) {
         return await this.measurementService.deleteMeasurement(measurementId);
     }
@@ -34,6 +42,21 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], MeasurementController.prototype, "createMeasurement", null);
+__decorate([
+    (0, common_1.Get)('/getMeasurement/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], MeasurementController.prototype, "getMeasurement", null);
+__decorate([
+    (0, common_1.Patch)('updateMeasurement'),
+    __param(0, (0, common_1.Body)("id")),
+    __param(1, (0, common_1.Body)("measurementData")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], MeasurementController.prototype, "updateMeasurement", null);
 __decorate([
     (0, common_1.Delete)('/deleteMeasurement/:id'),
     __param(0, (0, common_1.Param)('id')),

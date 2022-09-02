@@ -13,5 +13,6 @@ exports.EmployeeSchema = new mongoose.Schema({
     password: { type: String },
     description: { type: String },
     picture: { type: String },
+    shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
 });
 //# sourceMappingURL=employee.schema.js.map

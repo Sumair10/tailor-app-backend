@@ -16,14 +16,57 @@ exports.CustomerService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const shop_schema_1 = require("../shop/shop.schema");
 let CustomerService = class CustomerService {
-    constructor(customerModel) {
+    constructor(customerModel, shopModel) {
         this.customerModel = customerModel;
+        this.shopModel = shopModel;
     }
     async createCustomer(req) {
-        const newCustomer = new this.customerModel(req);
+        let shop;
+        shop = await this.shopModel.findOne({ name: req.shop });
+        console.log('new', shop);
+        const newCustomer = new this.customerModel(Object.assign(Object.assign({}, req), { shop: shop }));
         console.log('new model : ', newCustomer);
         return await newCustomer.save();
+    }
+    async getCustomer(customerId) {
+        let customer;
+        if (customerId.match(/^[0-9a-fA-F]{24}$/)) {
+            customer = await this.customerModel
+                .find({ _id: customerId })
+                .populate('shop');
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid customer id');
+        }
+        return customer;
+    }
+    async updateCustomer(customerId, customerData) {
+        let updatedCustomer;
+        let response;
+        try {
+            updatedCustomer = await this.customerModel.findOne({
+                _id: customerId,
+            });
+        }
+        catch (err) {
+            throw new common_1.NotFoundException('User does not exist');
+        }
+        console.log('updatedCustomer', updatedCustomer);
+        const newCustomer = Object.assign(Object.assign({}, updatedCustomer._doc), customerData);
+        try {
+            response = await (await this.customerModel.findOneAndUpdate({ _id: customerId }, newCustomer, {
+                new: true,
+                upsert: true,
+                setDefaultsOnInsert: true,
+            })).populate('shop');
+        }
+        catch (err) {
+            throw new common_1.NotFoundException('customer not Found');
+        }
+        console.log('response', response);
+        return response;
     }
     async deleteCustomer(customerId) {
         let customer;
@@ -42,7 +85,9 @@ let CustomerService = class CustomerService {
 CustomerService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('Customer')),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __param(1, (0, mongoose_1.InjectModel)('Shop')),
+    __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model])
 ], CustomerService);
 exports.CustomerService = CustomerService;
 //# sourceMappingURL=customer.service.js.map

@@ -19,16 +19,63 @@ const mongoose_2 = require("mongoose");
 const shop_service_1 = require("../shop/shop.service");
 const customer_service_1 = require("../customer/customer.service");
 const shop_schema_1 = require("../shop/shop.schema");
+const customer_schema_1 = require("../customer/customer.schema");
 let MeasurementService = class MeasurementService {
-    constructor(measurementModel, ShopService, CustomerService) {
+    constructor(measurementModel, customerModel, shopModel) {
         this.measurementModel = measurementModel;
-        this.ShopService = ShopService;
-        this.CustomerService = CustomerService;
+        this.customerModel = customerModel;
+        this.shopModel = shopModel;
     }
     async createMeasurement(req) {
-        const newMeasurement = new this.measurementModel(req);
+        let customer;
+        let shop;
+        console.log('new', req);
+        customer = await this.customerModel.findOne({ customer_email: req.customer });
+        console.log('new', customer);
+        shop = await this.shopModel.findOne({ name: req.shop });
+        console.log('new', shop);
+        const newMeasurement = new this.measurementModel(Object.assign(Object.assign({}, req), { customer: customer._id, shop: shop._id }));
         console.log('new model : ', newMeasurement);
         return await newMeasurement.save();
+    }
+    async getMeasurement(measurementId) {
+        let measurement;
+        if (measurementId.match(/^[0-9a-fA-F]{24}$/)) {
+            measurement = await this.measurementModel
+                .find({ _id: measurementId })
+                .populate('shop')
+                .populate('customer');
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid measurement id');
+        }
+        return measurement;
+    }
+    async updateMeasurement(measurementId, measurementData) {
+        let updatedMeasurement;
+        let response;
+        try {
+            updatedMeasurement = await this.measurementModel.findOne({
+                _id: measurementId,
+            });
+        }
+        catch (err) {
+            throw new common_1.NotFoundException('User does not exist');
+        }
+        console.log('updatedMeasurement', updatedMeasurement);
+        const newMeasurement = Object.assign(Object.assign({}, updatedMeasurement._doc), measurementData);
+        try {
+            response = await (await this.measurementModel.findOneAndUpdate({ _id: measurementId }, newMeasurement, {
+                new: true,
+                upsert: true,
+                setDefaultsOnInsert: true,
+            })).populate('shop');
+        }
+        catch (err) {
+            throw new common_1.NotFoundException('measurement not Found');
+        }
+        console.log('response', response);
+        return response;
     }
     async deleteMeasurement(measurementId) {
         let measurement;
@@ -47,9 +94,11 @@ let MeasurementService = class MeasurementService {
 MeasurementService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('Measurement')),
+    __param(1, (0, mongoose_1.InjectModel)('Customer')),
+    __param(2, (0, mongoose_1.InjectModel)('Shop')),
     __metadata("design:paramtypes", [mongoose_2.Model,
-        shop_service_1.ShopService,
-        customer_service_1.CustomerService])
+        mongoose_2.Model,
+        mongoose_2.Model])
 ], MeasurementService);
 exports.MeasurementService = MeasurementService;
 //# sourceMappingURL=measurement.service.js.map

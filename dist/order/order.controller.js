@@ -23,6 +23,14 @@ let OrderController = class OrderController {
         console.log('req.body', req.body);
         return await this.orderService.createOrder(req.body);
     }
+    async getOrder(orderId) {
+        const result = await this.orderService.getOrder(orderId);
+        return result;
+    }
+    async updateOrder(orderId, orderData) {
+        const result = await this.orderService.updateOrder(orderId, orderData);
+        return result;
+    }
     async deleteOrder(orderId) {
         return await this.orderService.deleteOrder(orderId);
     }
@@ -34,6 +42,21 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "createOrder", null);
+__decorate([
+    (0, common_1.Get)('/getOrder/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "getOrder", null);
+__decorate([
+    (0, common_1.Patch)('updateOrder'),
+    __param(0, (0, common_1.Body)("id")),
+    __param(1, (0, common_1.Body)("orderData")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "updateOrder", null);
 __decorate([
     (0, common_1.Delete)('/deleteOrder/:id'),
     __param(0, (0, common_1.Param)('id')),

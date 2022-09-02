@@ -7,20 +7,78 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Shop } from 'src/shop/shop.schema';
 import { Employee } from './employee.schema';
 
 @Injectable()
 export class EmployeeService {
   constructor(
     @InjectModel('Employee') private readonly employeeModel: Model<Employee>,
+    @InjectModel('Shop') private readonly shopModel: Model<Shop>
+
   ) {}
   /*************************** create a folder ***************************/
   async createEmployee(req): Promise<any> {
-   
-      const newEmployee = new this.employeeModel(req);
+
+    let shop
+    shop = await this.shopModel.findOne({name : req.shop})
+    console.log('new', shop);
+      const newEmployee = new this.employeeModel({...req , shop : shop});
       console.log('new model : ', newEmployee);
       return await newEmployee.save();
   
+  }
+
+
+  async getEmployee(employeeId: string): Promise<any> {
+   let employee
+    if (employeeId.match(/^[0-9a-fA-F]{24}$/)) {
+      employee = await this.employeeModel
+        .find({ _id: employeeId  })
+        .populate('shop');
+    } else {
+      throw new BadRequestException('Invalid employee id');
+    }
+  
+    ////console.log('files', files);
+    return employee;
+  }
+
+  async updateEmployee(employeeId, employeeData) {
+    let updatedEmployee;
+    let response;
+    try {
+      updatedEmployee = await this.employeeModel.findOne({
+        _id: employeeId,
+      });
+    } catch (err) {
+      throw new NotFoundException('User does not exist');
+    }
+    console.log('updatedEmployee', updatedEmployee);
+    const newEmployee = {
+      ...updatedEmployee._doc,
+      ...employeeData,
+    };
+
+    try {
+      response = await (
+        await this.employeeModel.findOneAndUpdate(
+          { _id: employeeId },
+          newEmployee,
+          {
+            new: true,
+            upsert: true,
+            setDefaultsOnInsert: true,
+          },
+        )
+      ).populate('shop');
+    } catch (err) {
+      throw new NotFoundException('employee not Found');
+    }
+
+    console.log('response', response);
+
+    return response;
   }
 
   async deleteEmployee(employeeId: string): Promise<any> {

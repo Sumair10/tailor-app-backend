@@ -11,6 +11,8 @@ export const EmployeeSchema = new mongoose.Schema({
   password : { type: String},
   description : { type: String},
   picture : { type: String},
+  shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
+
 });
 
 export interface Employee {
@@ -23,5 +25,6 @@ export interface Employee {
   password : string,
   description : string,
   picture : string,
+  shop : string,
 
 }

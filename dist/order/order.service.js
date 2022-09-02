@@ -39,6 +39,45 @@ let OrderService = class OrderService {
         console.log('new model : ', newOrder);
         return await newOrder.save();
     }
+    async getOrder(orderId) {
+        let order;
+        if (orderId.match(/^[0-9a-fA-F]{24}$/)) {
+            order = await this.orderModel
+                .find({ _id: orderId })
+                .populate('customer')
+                .populate('assign_to');
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid order id');
+        }
+        return order;
+    }
+    async updateOrder(orderId, orderData) {
+        let updatedOrder;
+        let response;
+        try {
+            updatedOrder = await this.orderModel.findOne({
+                _id: orderId,
+            });
+        }
+        catch (err) {
+            throw new common_1.NotFoundException('User does not exist');
+        }
+        console.log('updatedOrder', updatedOrder);
+        const newOrder = Object.assign(Object.assign({}, updatedOrder._doc), orderData);
+        try {
+            response = await (await this.orderModel.findOneAndUpdate({ _id: orderId }, newOrder, {
+                new: true,
+                upsert: true,
+                setDefaultsOnInsert: true,
+            }).populate('customer').populate('assign_to'));
+        }
+        catch (err) {
+            throw new common_1.NotFoundException('order not Found');
+        }
+        console.log('response', response);
+        return response;
+    }
     async deleteOrder(orderId) {
         let order;
         try {
@@ -49,7 +88,7 @@ let OrderService = class OrderService {
         }
         if (order) {
             await this.orderModel.findByIdAndDelete(orderId);
-            return 'Employee deleted successfully';
+            return 'order deleted successfully';
         }
     }
 };

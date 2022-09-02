@@ -21,6 +21,19 @@ export class MeasurementController {
     return await this.measurementService.createMeasurement(req.body);
   }
 
+
+  @Get('/getMeasurement/:id')
+  async getMeasurement(@Param('id') measurementId: string ) {
+    const result = await this.measurementService.getMeasurement(measurementId);
+    return result;
+  }
+
+  @Patch('updateMeasurement')
+  async updateMeasurement(@Body("id") measurementId: String, @Body("measurementData") measurementData) {
+    const result = await this.measurementService.updateMeasurement(measurementId, measurementData);
+    return result;
+  }
+
   @Delete('/deleteMeasurement/:id')
   async deleteMeasurement(@Param('id') measurementId: string) {
     return await this.measurementService.deleteMeasurement(measurementId);
