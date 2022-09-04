@@ -8,26 +8,22 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Shop } from 'src/shop/shop.schema';
-import { Services } from 'src/services/services.schema';
 import { Employee } from './employee.schema';
 
 @Injectable()
 export class EmployeeService {
   constructor(
     @InjectModel('Employee') private readonly employeeModel: Model<Employee>,
-    @InjectModel('Shop') private readonly shopModel: Model<Shop>,
-    @InjectModel('Services') private readonly servicesModel: Model<Services>
+    @InjectModel('Shop') private readonly shopModel: Model<Shop>
 
   ) {}
   /*************************** create a folder ***************************/
   async createEmployee(req): Promise<any> {
 
     let shop
-    let services
     shop = await this.shopModel.findOne({name : req.shop})
-    services = await this.servicesModel.findOne({name : req.service})
     console.log('new', shop);
-      const newEmployee = new this.employeeModel({...req , shop : shop , services : services});
+      const newEmployee = new this.employeeModel({...req , shop : shop});
       console.log('new model : ', newEmployee);
       return await newEmployee.save();
   
@@ -39,8 +35,7 @@ export class EmployeeService {
     if (employeeId.match(/^[0-9a-fA-F]{24}$/)) {
       employee = await this.employeeModel
         .find({ _id: employeeId  })
-        .populate('shop')
-        .populate('services');
+        .populate('shop');
     } else {
       throw new BadRequestException('Invalid employee id');
     }
@@ -99,6 +94,21 @@ export class EmployeeService {
       return 'Employee deleted successfully';
     }
   }
+
+  async getAllEmployeesOfShop(shopId: string): Promise<any> {
+    let shopEmployee
+     if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
+      shopEmployee = await this.employeeModel
+         .find({ shop: shopId  })
+         .populate('shop');
+     } else {
+       throw new BadRequestException('Invalid measurement id');
+     }
+   
+     ////console.log('files', files);
+     return shopEmployee;
+   }
+ 
 
   /*************************** get all projects ***************************/
   // async getAllProjects(id, isAdmin, parent_folder) {

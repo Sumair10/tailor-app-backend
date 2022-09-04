@@ -7,53 +7,47 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Measurement } from './measurement.schema';
-import { ShopService } from 'src/shop/shop.service';
-import { CustomerService } from 'src/customer/customer.service';
+import { Services } from 'src/services/services.schema';
 import { Shop } from 'src/shop/shop.schema';
-import { Customer } from 'src/customer/customer.schema';
+import { Measurement } from './measurement.schema';
 
 @Injectable()
 export class MeasurementService {
   constructor(
     @InjectModel('Measurement') private readonly measurementModel: Model<Measurement>,
-    @InjectModel('Customer') private readonly customerModel: Model<Customer>,
-    @InjectModel('Shop') private readonly shopModel: Model<Shop>
+    @InjectModel('Shop') private readonly shopModel: Model<Shop>,
+    // @InjectModel('Services') private readonly servicesModel: Model<Services>,
+
   ) {}
   /*************************** create a folder ***************************/
   async createMeasurement(req): Promise<any> {
-    let customer
+
     let shop
-
-    console.log('new', req);
-
-      customer = await this.customerModel.findOne({customer_email : req.customer})
-      console.log('new', customer);
-      shop = await this.shopModel.findOne({name : req.shop})
-      console.log('new', shop);
-  
-  
-      const newMeasurement = new this.measurementModel({...req , customer : customer._id , shop : shop._id});
+    shop = await this.shopModel.findOne({name : req.shop})
+    // let services
+    // services = await this.servicesModel.findOne({name : req.service})
+      const newMeasurement = new this.measurementModel({...req , shop : shop });
       console.log('new model : ', newMeasurement);
       return await newMeasurement.save();
+  
   }
 
-  async getMeasurement(measurementId: string): Promise<any> {
-    let measurement
-     if (measurementId.match(/^[0-9a-fA-F]{24}$/)) {
-      measurement = await this.measurementModel
-         .find({ _id: measurementId  })
-         .populate('shop')
-         .populate('customer');
-     } else {
-       throw new BadRequestException('Invalid measurement id');
-     }
-   
-     ////console.log('files', files);
-     return measurement;
-   }
 
-   async updateMeasurement(measurementId, measurementData) {
+  async getMeasurement(measurementId: string): Promise<any> {
+   let measurement
+    if (measurementId.match(/^[0-9a-fA-F]{24}$/)) {
+      measurement = await this.measurementModel
+        .find({ _id: measurementId  })
+        .populate('shop');
+    } else {
+      throw new BadRequestException('Invalid measurement id');
+    }
+  
+    ////console.log('files', files);
+    return measurement;
+  }
+
+  async updateMeasurement(measurementId, measurementData) {
     let updatedMeasurement;
     let response;
     try {
@@ -90,20 +84,35 @@ export class MeasurementService {
     return response;
   }
 
-   /*************************** delete a measurement ***************************/
-   async deleteMeasurement(measurementId: string): Promise<any> {
+  async deleteMeasurement(measurementId: string): Promise<any> {
     let measurement;
 
     try {
       measurement = await this.measurementModel.findById(measurementId).exec();
     } catch (error) {
-      throw new NotFoundException('File not found');
+      throw new NotFoundException('measurement not found');
     }
     if (measurement) {
       await this.measurementModel.findByIdAndDelete(measurementId);
       return 'Measurement deleted successfully';
     }
   }
+
+  async getAllMeasurementsOfShop(shopId: string): Promise<any> {
+    let shopMeasurement
+     if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
+      shopMeasurement = await this.measurementModel
+         .find({ shop: shopId  })
+         .populate('shop');
+     } else {
+       throw new BadRequestException('Invalid measurement id');
+     }
+   
+     ////console.log('files', files);
+     return shopMeasurement;
+   }
+ 
+
   /*************************** get all projects ***************************/
   // async getAllProjects(id, isAdmin, parent_folder) {
   //   console.log('id', id);

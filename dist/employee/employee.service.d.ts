@@ -9,4 +9,5 @@ export declare class EmployeeService {
     getEmployee(employeeId: string): Promise<any>;
     updateEmployee(employeeId: any, employeeData: any): Promise<any>;
     deleteEmployee(employeeId: string): Promise<any>;
+    getAllEmployeesOfShop(shopId: string): Promise<any>;
 }

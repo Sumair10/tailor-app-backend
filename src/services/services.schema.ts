@@ -8,6 +8,7 @@ export const ServicesSchema = new mongoose.Schema({
   description : { type: String},
   isActive : { type: Boolean},
   measurement_fields: { type: Schema.Types.ObjectId, ref: 'Measurement', required: true },
+  shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
 
 
 });
@@ -17,6 +18,7 @@ export interface Services {
   code : string;
   price : string;
   description : string;
-  isActive : string;
+  isActive : boolean;
   measurement_fields : string;
+  shop : string;
 }

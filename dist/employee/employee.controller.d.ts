@@ -7,4 +7,5 @@ export declare class EmployeeController {
     getEmployee(employeeId: string): Promise<any>;
     updateEmployee(employeeId: String, employeeData: any): Promise<any>;
     deleteEmployee(employeeId: string): Promise<any>;
+    getAllEmployeesOfShop(shopId: string): Promise<any>;
 }

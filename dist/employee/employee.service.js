@@ -81,6 +81,18 @@ let EmployeeService = class EmployeeService {
             return 'Employee deleted successfully';
         }
     }
+    async getAllEmployeesOfShop(shopId) {
+        let shopEmployee;
+        if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
+            shopEmployee = await this.employeeModel
+                .find({ shop: shopId })
+                .populate('shop');
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid measurement id');
+        }
+        return shopEmployee;
+    }
 };
 EmployeeService = __decorate([
     (0, common_1.Injectable)(),

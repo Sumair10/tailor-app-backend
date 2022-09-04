@@ -16,25 +16,17 @@ exports.MeasurementService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-const shop_service_1 = require("../shop/shop.service");
-const customer_service_1 = require("../customer/customer.service");
+const services_schema_1 = require("../services/services.schema");
 const shop_schema_1 = require("../shop/shop.schema");
-const customer_schema_1 = require("../customer/customer.schema");
 let MeasurementService = class MeasurementService {
-    constructor(measurementModel, customerModel, shopModel) {
+    constructor(measurementModel, shopModel) {
         this.measurementModel = measurementModel;
-        this.customerModel = customerModel;
         this.shopModel = shopModel;
     }
     async createMeasurement(req) {
-        let customer;
         let shop;
-        console.log('new', req);
-        customer = await this.customerModel.findOne({ customer_email: req.customer });
-        console.log('new', customer);
         shop = await this.shopModel.findOne({ name: req.shop });
-        console.log('new', shop);
-        const newMeasurement = new this.measurementModel(Object.assign(Object.assign({}, req), { customer: customer._id, shop: shop._id }));
+        const newMeasurement = new this.measurementModel(Object.assign(Object.assign({}, req), { shop: shop }));
         console.log('new model : ', newMeasurement);
         return await newMeasurement.save();
     }
@@ -43,8 +35,7 @@ let MeasurementService = class MeasurementService {
         if (measurementId.match(/^[0-9a-fA-F]{24}$/)) {
             measurement = await this.measurementModel
                 .find({ _id: measurementId })
-                .populate('shop')
-                .populate('customer');
+                .populate('shop');
         }
         else {
             throw new common_1.BadRequestException('Invalid measurement id');
@@ -83,21 +74,31 @@ let MeasurementService = class MeasurementService {
             measurement = await this.measurementModel.findById(measurementId).exec();
         }
         catch (error) {
-            throw new common_1.NotFoundException('File not found');
+            throw new common_1.NotFoundException('measurement not found');
         }
         if (measurement) {
             await this.measurementModel.findByIdAndDelete(measurementId);
             return 'Measurement deleted successfully';
         }
     }
+    async getAllMeasurementsOfShop(shopId) {
+        let shopMeasurement;
+        if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
+            shopMeasurement = await this.measurementModel
+                .find({ shop: shopId })
+                .populate('shop');
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid measurement id');
+        }
+        return shopMeasurement;
+    }
 };
 MeasurementService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('Measurement')),
-    __param(1, (0, mongoose_1.InjectModel)('Customer')),
-    __param(2, (0, mongoose_1.InjectModel)('Shop')),
+    __param(1, (0, mongoose_1.InjectModel)('Shop')),
     __metadata("design:paramtypes", [mongoose_2.Model,
-        mongoose_2.Model,
         mongoose_2.Model])
 ], MeasurementService);
 exports.MeasurementService = MeasurementService;

@@ -12,19 +12,17 @@ const common_1 = require("@nestjs/common");
 const measurement_service_1 = require("./measurement.service");
 const measurement_controller_1 = require("./measurement.controller");
 const measurement_schema_1 = require("./measurement.schema");
-const customer_schema_1 = require("../customer/customer.schema");
-const shop_schema_1 = require("../shop/shop.schema");
 const shop_module_1 = require("../shop/shop.module");
-const customer_module_1 = require("../customer/customer.module");
-const shop_service_1 = require("../shop/shop.service");
-const customer_service_1 = require("../customer/customer.service");
+const shop_schema_1 = require("../shop/shop.schema");
+const services_module_1 = require("../services/services.module");
+const services_schema_1 = require("../services/services.schema");
 let MeasurementModule = class MeasurementModule {
 };
 MeasurementModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            customer_module_1.CustomerModule,
             shop_module_1.ShopModule,
+            services_module_1.ServicesModule,
             mongoose_1.MongooseModule.forFeature([
                 { name: 'Measurement', schema: measurement_schema_1.MeasurementSchema },
                 {
@@ -32,13 +30,13 @@ MeasurementModule = __decorate([
                     schema: shop_schema_1.ShopSchema,
                 },
                 {
-                    name: 'Customer',
-                    schema: customer_schema_1.CustomerSchema,
+                    name: 'Services',
+                    schema: services_schema_1.ServicesSchema,
                 },
             ]),
         ],
         controllers: [measurement_controller_1.MeasurementController],
-        providers: [measurement_service_1.MeasurementService, shop_service_1.ShopService, customer_service_1.CustomerService],
+        providers: [measurement_service_1.MeasurementService],
     })
 ], MeasurementModule);
 exports.MeasurementModule = MeasurementModule;

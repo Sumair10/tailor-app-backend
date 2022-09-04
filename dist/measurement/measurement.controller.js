@@ -34,6 +34,10 @@ let MeasurementController = class MeasurementController {
     async deleteMeasurement(measurementId) {
         return await this.measurementService.deleteMeasurement(measurementId);
     }
+    async getAllMeasurementsOfShop(shopId) {
+        const result = await this.measurementService.getAllMeasurementsOfShop(shopId);
+        return result;
+    }
 };
 __decorate([
     (0, common_1.Post)(),
@@ -64,6 +68,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], MeasurementController.prototype, "deleteMeasurement", null);
+__decorate([
+    (0, common_1.Get)('/getAllMeasurementsOfShop/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], MeasurementController.prototype, "getAllMeasurementsOfShop", null);
 MeasurementController = __decorate([
     (0, common_1.Controller)('measurement'),
     __metadata("design:paramtypes", [measurement_service_1.MeasurementService])

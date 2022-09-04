@@ -8,6 +8,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Measurement } from 'src/measurement/measurement.schema';
+import { Shop } from 'src/shop/shop.schema';
 import { Services } from './services.schema';
 
 @Injectable()
@@ -15,13 +16,17 @@ export class ServicesService {
   constructor(
     @InjectModel('Services') private readonly servicesModel: Model<Services>,
     @InjectModel('Measurement') private readonly measurementModel: Model<Measurement>,
+    @InjectModel('Shop') private readonly shopModel: Model<Shop>,
   ) {}
   /*************************** create a folder ***************************/
   async createServices(req): Promise<any> {
+    console.log('create services', req);
     let measurement;
-    measurement = await this.measurementModel.findOne({ name: req.measurement });
+    measurement = await this.measurementModel.findOne({ name: req.measurement_fields });
+    let shop
+    shop = await this.shopModel.findOne({name : req.shop})
     console.log('new', measurement);
-    const newServices = new this.servicesModel({ ...req, measurement: measurement });
+    const newServices = new this.servicesModel({ ...req, measurement_fields: measurement , shop: shop});
     console.log('new model : ', newServices);
     return await newServices.save();
   }

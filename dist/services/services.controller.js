@@ -12,31 +12,27 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EmployeeController = void 0;
+exports.ServicesController = void 0;
 const common_1 = require("@nestjs/common");
-const employee_service_1 = require("./employee.service");
-let EmployeeController = class EmployeeController {
-    constructor(employeeService) {
-        this.employeeService = employeeService;
+const services_service_1 = require("./services.service");
+let ServicesController = class ServicesController {
+    constructor(servicesService) {
+        this.servicesService = servicesService;
     }
-    async createEmployee(req) {
+    async createServices(req) {
         console.log('req.body', req.body);
-        return await this.employeeService.createEmployee(req.body);
+        return await this.servicesService.createServices(req.body);
     }
-    async getEmployee(employeeId) {
-        const result = await this.employeeService.getEmployee(employeeId);
+    async getServices(servicesId) {
+        const result = await this.servicesService.getServices(servicesId);
         return result;
     }
-    async updateEmployee(employeeId, employeeData) {
-        const result = await this.employeeService.updateEmployee(employeeId, employeeData);
+    async updateServices(servicesId, servicesData) {
+        const result = await this.servicesService.updateServices(servicesId, servicesData);
         return result;
     }
-    async deleteEmployee(employeeId) {
-        return await this.employeeService.deleteEmployee(employeeId);
-    }
-    async getAllEmployeesOfShop(shopId) {
-        const result = await this.employeeService.getAllEmployeesOfShop(shopId);
-        return result;
+    async deleteServices(servicesId) {
+        return await this.servicesService.deleteServices(servicesId);
     }
 };
 __decorate([
@@ -45,39 +41,32 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], EmployeeController.prototype, "createEmployee", null);
+], ServicesController.prototype, "createServices", null);
 __decorate([
-    (0, common_1.Get)('/getEmployee/:id'),
+    (0, common_1.Get)('/getServices/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], EmployeeController.prototype, "getEmployee", null);
+], ServicesController.prototype, "getServices", null);
 __decorate([
-    (0, common_1.Patch)('updateEmployee'),
+    (0, common_1.Patch)('updateServices'),
     __param(0, (0, common_1.Body)("id")),
-    __param(1, (0, common_1.Body)("employeeData")),
+    __param(1, (0, common_1.Body)("servicesData")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
-], EmployeeController.prototype, "updateEmployee", null);
+], ServicesController.prototype, "updateServices", null);
 __decorate([
-    (0, common_1.Delete)('/deleteEmployee/:id'),
+    (0, common_1.Delete)('/deleteServices/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], EmployeeController.prototype, "deleteEmployee", null);
-__decorate([
-    (0, common_1.Get)('/getAllEmployeesOfShop/:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], EmployeeController.prototype, "getAllEmployeesOfShop", null);
-EmployeeController = __decorate([
-    (0, common_1.Controller)('employee'),
-    __metadata("design:paramtypes", [employee_service_1.EmployeeService])
-], EmployeeController);
-exports.EmployeeController = EmployeeController;
-//# sourceMappingURL=employee.controller.js.map
+], ServicesController.prototype, "deleteServices", null);
+ServicesController = __decorate([
+    (0, common_1.Controller)('services'),
+    __metadata("design:paramtypes", [services_service_1.ServicesService])
+], ServicesController);
+exports.ServicesController = ServicesController;
+//# sourceMappingURL=services.controller.js.map

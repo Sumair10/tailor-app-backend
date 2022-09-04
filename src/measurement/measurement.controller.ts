@@ -21,7 +21,6 @@ export class MeasurementController {
     return await this.measurementService.createMeasurement(req.body);
   }
 
-
   @Get('/getMeasurement/:id')
   async getMeasurement(@Param('id') measurementId: string ) {
     const result = await this.measurementService.getMeasurement(measurementId);
@@ -39,7 +38,11 @@ export class MeasurementController {
     return await this.measurementService.deleteMeasurement(measurementId);
   }
 
- 
+  @Get('/getAllMeasurementsOfShop/:id')
+  async getAllMeasurementsOfShop(@Param('id') shopId: string ) {
+    const result = await this.measurementService.getAllMeasurementsOfShop(shopId);
+    return result;
+  }
 
   // @Post('getAllProjects')
   // async getAllProjects(@Body('id') id: string, @Body('isAdmin') isAdmin: boolean,@Body('parent_folder') parent_folder: string) {
