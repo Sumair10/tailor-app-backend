@@ -33,13 +33,13 @@ export class OrderService {
     console.log('new', req);
 
       customer = await this.customerModel.findOne({customer_email : req.customer_email})
-      console.log('new', customer);
-      employee = await this.employeeModel.findOne({email : req.assign_to})
-      console.log('new', employee);
+      console.log('customer', customer);
+      employee = await this.employeeModel.findOne({email : req.assignTo})
+      console.log('employee', employee);
       shop = await this.shopModel.findOne({name : req.shop})
-      console.log('new', shop);
+      console.log('shop', shop);
     
-      const newOrder = new this.orderModel({...req , customer : customer._id , assign_to : employee._id , shop : shop});
+      const newOrder = new this.orderModel({...req , customer : customer._id , assignTo : employee._id , shop : shop});
       console.log('new model : ', newOrder);
       return await newOrder.save();
     
@@ -53,7 +53,7 @@ export class OrderService {
       order = await this.orderModel
          .find({ _id: orderId  })
          .populate('customer')
-         .populate('assign_to')
+         .populate('assignTo')
          .populate('shop')
          ;
      } else {
@@ -90,7 +90,7 @@ export class OrderService {
             upsert: true,
             setDefaultsOnInsert: true,
           },
-        ).populate('customer').populate('assign_to')
+        ).populate('customer').populate('assignTo')
       )
     } catch (err) {
       throw new NotFoundException('order not Found');
@@ -121,7 +121,7 @@ export class OrderService {
       shopOrders = await this.orderModel
          .find({ shop: shopId  })
          .populate('customer')
-         .populate('assign_to')
+         .populate('assignTo')
          .populate('shop')
      } else {
        throw new BadRequestException('Invalid measurement id');

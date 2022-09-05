@@ -35,12 +35,12 @@ let OrderService = class OrderService {
         let shop;
         console.log('new', req);
         customer = await this.customerModel.findOne({ customer_email: req.customer_email });
-        console.log('new', customer);
-        employee = await this.employeeModel.findOne({ email: req.assign_to });
-        console.log('new', employee);
+        console.log('customer', customer);
+        employee = await this.employeeModel.findOne({ email: req.assignTo });
+        console.log('employee', employee);
         shop = await this.shopModel.findOne({ name: req.shop });
-        console.log('new', shop);
-        const newOrder = new this.orderModel(Object.assign(Object.assign({}, req), { customer: customer._id, assign_to: employee._id, shop: shop }));
+        console.log('shop', shop);
+        const newOrder = new this.orderModel(Object.assign(Object.assign({}, req), { customer: customer._id, assignTo: employee._id, shop: shop }));
         console.log('new model : ', newOrder);
         return await newOrder.save();
     }
@@ -50,7 +50,7 @@ let OrderService = class OrderService {
             order = await this.orderModel
                 .find({ _id: orderId })
                 .populate('customer')
-                .populate('assign_to')
+                .populate('assignTo')
                 .populate('shop');
         }
         else {
@@ -76,7 +76,7 @@ let OrderService = class OrderService {
                 new: true,
                 upsert: true,
                 setDefaultsOnInsert: true,
-            }).populate('customer').populate('assign_to'));
+            }).populate('customer').populate('assignTo'));
         }
         catch (err) {
             throw new common_1.NotFoundException('order not Found');
@@ -103,7 +103,7 @@ let OrderService = class OrderService {
             shopOrders = await this.orderModel
                 .find({ shop: shopId })
                 .populate('customer')
-                .populate('assign_to')
+                .populate('assignTo')
                 .populate('shop');
         }
         else {
