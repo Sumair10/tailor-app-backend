@@ -2,10 +2,10 @@ import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export const EmployeeSchema = new mongoose.Schema({
-  employee_name: { type: String, required: true},
+  name: { type: String, required: true},
   email: { type: String },
   phone : { type: String},
-  birth_date : { type: String},
+  dateOfBirth : { type: String},
   salary : { type: String},
   address : { type: String},
   password : { type: String},
@@ -16,10 +16,10 @@ export const EmployeeSchema = new mongoose.Schema({
 });
 
 export interface Employee {
-  employee_name: string;
+  name: string;
   email:string;
   phone : string,
-  birth_date : string,
+  dateOfBirth : string,
   salary : string,
   address : string,
   password : string,

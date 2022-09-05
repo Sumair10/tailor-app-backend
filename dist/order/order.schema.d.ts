@@ -14,8 +14,8 @@ export declare const OrderSchema: mongoose.Schema<any, mongoose.Model<any, any, 
 }>;
 export interface Order {
     customer: string;
-    assign_to: string;
-    delivery_date: Date;
+    assignTo: string;
+    deliveryDate: Date;
     reference: string;
     priority: string;
     services: string;

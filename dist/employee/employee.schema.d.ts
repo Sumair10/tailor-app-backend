@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose';
 export declare const EmployeeSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, any, {}, "type", {
-    employee_name: string;
+    name: string;
     shop: mongoose.Schema.Types.ObjectId;
     email?: string;
     phone?: string;
-    birth_date?: string;
+    dateOfBirth?: string;
     salary?: string;
     address?: string;
     password?: string;
@@ -12,10 +12,10 @@ export declare const EmployeeSchema: mongoose.Schema<any, mongoose.Model<any, an
     picture?: string;
 }>;
 export interface Employee {
-    employee_name: string;
+    name: string;
     email: string;
     phone: string;
-    birth_date: string;
+    dateOfBirth: string;
     salary: string;
     address: string;
     password: string;

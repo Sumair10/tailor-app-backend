@@ -18,8 +18,8 @@ export const OrderSchema = new mongoose.Schema({
 
 export interface Order {
   customer: string;
-  assign_to : string,
-  delivery_date:Date;
+  assignTo : string,
+  deliveryDate:Date;
   reference : string,
   priority : string,
   services : string,
