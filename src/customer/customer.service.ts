@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Order } from 'src/order/order.schema';
 import { Shop } from 'src/shop/shop.schema';
 import { Customer } from './customer.schema';
 
@@ -15,6 +16,7 @@ export class CustomerService {
   constructor(
     @InjectModel('Customer') private readonly customerModel: Model<Customer>,
     @InjectModel('Shop') private readonly shopModel: Model<Shop>,
+    @InjectModel('Order') private readonly orderModel: Model<Order>,
   ) {}
   /*************************** create a folder ***************************/
   async createCustomer(req): Promise<any> {
@@ -28,13 +30,22 @@ export class CustomerService {
 
   async getCustomer(customerId: string): Promise<any> {
     let customer;
+    let orders
     if (customerId.match(/^[0-9a-fA-F]{24}$/)) {
       customer = await this.customerModel
         .find({ _id: customerId })
         .populate('shop');
+
+        orders = await this.orderModel
+        .find({ customer: customer._id  })
+
+        console.log('orders',orders);
+
     } else {
       throw new BadRequestException('Invalid customer id');
     }
+
+
 
     ////console.log('files', files);
     return customer;

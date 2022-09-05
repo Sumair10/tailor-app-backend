@@ -16,11 +16,13 @@ exports.CustomerService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const order_schema_1 = require("../order/order.schema");
 const shop_schema_1 = require("../shop/shop.schema");
 let CustomerService = class CustomerService {
-    constructor(customerModel, shopModel) {
+    constructor(customerModel, shopModel, orderModel) {
         this.customerModel = customerModel;
         this.shopModel = shopModel;
+        this.orderModel = orderModel;
     }
     async createCustomer(req) {
         let shop;
@@ -32,10 +34,14 @@ let CustomerService = class CustomerService {
     }
     async getCustomer(customerId) {
         let customer;
+        let orders;
         if (customerId.match(/^[0-9a-fA-F]{24}$/)) {
             customer = await this.customerModel
                 .find({ _id: customerId })
                 .populate('shop');
+            orders = await this.orderModel
+                .find({ customer: customer._id });
+            console.log('orders', orders);
         }
         else {
             throw new common_1.BadRequestException('Invalid customer id');
@@ -98,7 +104,9 @@ CustomerService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('Customer')),
     __param(1, (0, mongoose_1.InjectModel)('Shop')),
+    __param(2, (0, mongoose_1.InjectModel)('Order')),
     __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model,
         mongoose_2.Model])
 ], CustomerService);
 exports.CustomerService = CustomerService;

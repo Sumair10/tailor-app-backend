@@ -15,17 +15,23 @@ const customer_schema_1 = require("./customer.schema");
 const shop_module_1 = require("../shop/shop.module");
 const shop_service_1 = require("../shop/shop.service");
 const shop_schema_1 = require("../shop/shop.schema");
+const order_service_1 = require("../order/order.service");
+const order_schema_1 = require("../order/order.schema");
+const order_module_1 = require("../order/order.module");
 let CustomerModule = class CustomerModule {
 };
 CustomerModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            shop_module_1.ShopModule,
             mongoose_1.MongooseModule.forFeature([
                 { name: 'Customer', schema: customer_schema_1.CustomerSchema },
                 {
                     name: 'Shop',
                     schema: shop_schema_1.ShopSchema,
+                },
+                {
+                    name: 'Order',
+                    schema: order_schema_1.OrderSchema,
                 },
             ]),
         ],

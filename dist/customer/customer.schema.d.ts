@@ -1,20 +1,20 @@
 import * as mongoose from 'mongoose';
 export declare const CustomerSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any>, {}, {}, any, {}, "type", {
-    customer_email: string;
     shop: mongoose.Schema.Types.ObjectId;
+    name?: string;
     phone?: string;
     email?: string;
-    birth_date?: string;
-    opening_balance?: string;
+    dateOfBirth?: string;
+    openingBalance?: string;
     address?: string;
     description?: string;
 }>;
 export interface Customer {
-    customer_email: string;
     phone: string;
+    name: string;
     email: string;
-    birth_date: string;
-    opening_balance: string;
+    dateOfBirth: string;
+    openingBalance: string;
     address: string;
     description: string;
     shop: string;

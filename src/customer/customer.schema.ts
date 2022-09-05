@@ -2,25 +2,28 @@ import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export const CustomerSchema = new mongoose.Schema({
-  customer_email: { type: String, required: true},
+
+  name: { type: String},
   phone: { type: String},
   email: { type: String},
-  birth_date : { type: String},
-  opening_balance : { type: String},
+  dateOfBirth : { type: String},
+  openingBalance : { type: String},
   address : { type: String},
   description : { type: String},
   shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
+  // orders : {type : Array}
 
 
 });
 
 export interface Customer {
-  customer_email: string;
   phone : string;
+  name : string;
   email : string;
-  birth_date : string;
-  opening_balance : string;
+  dateOfBirth : string;
+  openingBalance : string;
   address : string;
   description : string;
   shop : string;
+  // orders: []
 }

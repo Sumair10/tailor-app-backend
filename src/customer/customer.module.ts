@@ -6,15 +6,23 @@ import { CustomerSchema } from './customer.schema';
 import { ShopModule } from 'src/shop/shop.module';
 import { ShopService } from 'src/shop/shop.service';
 import { ShopSchema } from 'src/shop/shop.schema';
+import { OrderService } from 'src/order/order.service';
+import { OrderSchema } from 'src/order/order.schema';
+import { OrderModule } from 'src/order/order.module';
 
 @Module({
   imports: [
-    ShopModule,
+    // ShopModule,
+    // OrderModule,
     MongooseModule.forFeature([
       { name: 'Customer', schema: CustomerSchema},
       {
         name: 'Shop',
         schema: ShopSchema,
+      },
+      {
+        name: 'Order',
+        schema: OrderSchema,
       },
       // { name: 'Organization', schema: OrgSchema },
       // { name: 'Auth', schema: AuthSchema },
@@ -22,6 +30,6 @@ import { ShopSchema } from 'src/shop/shop.schema';
     ]),
   ],
   controllers: [CustomerController],
-  providers: [CustomerService , ShopService],
+  providers: [CustomerService , ShopService ],
 })
 export class CustomerModule {}
