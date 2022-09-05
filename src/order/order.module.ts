@@ -13,12 +13,15 @@ import { EmployeeService } from 'src/employee/employee.service';
 import { CustomerSchema } from 'src/customer/customer.schema';
 import { ShopSchema } from 'src/shop/shop.schema';
 import { ShopModule } from 'src/shop/shop.module';
+import { ServicesSchema } from 'src/services/services.schema';
+import { ServicesModule } from 'src/services/services.module';
 
 @Module({
   imports: [
     EmployeeModule,
     CustomerModule,
     ShopModule,
+    // ServicesModule,
     MongooseModule.forFeature([
       { name: 'Order', schema: OrderSchema},
       {
@@ -32,6 +35,10 @@ import { ShopModule } from 'src/shop/shop.module';
       {
         name: 'Shop',
         schema: ShopSchema,
+      },
+      {
+        name: 'Services',
+        schema: ServicesSchema,
       },
       // { name: 'Organization', schema: OrgSchema },
       // { name: 'Auth', schema: AuthSchema },

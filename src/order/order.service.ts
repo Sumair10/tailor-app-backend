@@ -14,6 +14,7 @@ import { CustomerModule } from 'src/customer/customer.module';
 import { Customer } from 'src/customer/customer.schema';
 import { Employee } from 'src/employee/employee.schema';
 import { Shop } from 'src/shop/shop.schema';
+import { Services } from 'src/services/services.schema';
 
 @Injectable()
 export class OrderService {
@@ -22,6 +23,7 @@ export class OrderService {
     @InjectModel('Customer') private readonly customerModel: Model<Customer>,
     @InjectModel('Employee') private readonly employeeModel: Model<Employee>,
     @InjectModel('Shop') private readonly shopModel: Model<Shop>,
+    @InjectModel('Services') private readonly servicesModel: Model<Services>,
     // private readonly EmployeeService : EmployeeService,
   ) {}
   /*************************** create a folder ***************************/
@@ -29,6 +31,7 @@ export class OrderService {
     let customer
     let employee
     let shop
+    let services
 
     console.log('new', req);
 
@@ -38,8 +41,10 @@ export class OrderService {
       console.log('employee', employee);
       shop = await this.shopModel.findOne({name : req.shop})
       console.log('shop', shop);
+      services = await this.servicesModel.findOne({name : req.services})
+      console.log('services', services);
     
-      const newOrder = new this.orderModel({...req , customer : customer._id , assignTo : employee._id , shop : shop});
+      const newOrder = new this.orderModel({...req , customer : customer._id , assignTo : employee._id , shop : shop , services : services});
       console.log('new model : ', newOrder);
       return await newOrder.save();
     
@@ -123,6 +128,7 @@ export class OrderService {
          .populate('customer')
          .populate('assignTo')
          .populate('shop')
+         .populate('services')
      } else {
        throw new BadRequestException('Invalid measurement id');
      }

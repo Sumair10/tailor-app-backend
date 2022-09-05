@@ -20,6 +20,8 @@ const employee_service_1 = require("../employee/employee.service");
 const customer_schema_1 = require("../customer/customer.schema");
 const shop_schema_1 = require("../shop/shop.schema");
 const shop_module_1 = require("../shop/shop.module");
+const services_schema_1 = require("../services/services.schema");
+const services_module_1 = require("../services/services.module");
 let OrderModule = class OrderModule {
 };
 OrderModule = __decorate([
@@ -41,6 +43,10 @@ OrderModule = __decorate([
                 {
                     name: 'Shop',
                     schema: shop_schema_1.ShopSchema,
+                },
+                {
+                    name: 'Services',
+                    schema: services_schema_1.ServicesSchema,
                 },
             ]),
         ],

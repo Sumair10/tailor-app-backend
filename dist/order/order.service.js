@@ -22,17 +22,20 @@ const customer_module_1 = require("../customer/customer.module");
 const customer_schema_1 = require("../customer/customer.schema");
 const employee_schema_1 = require("../employee/employee.schema");
 const shop_schema_1 = require("../shop/shop.schema");
+const services_schema_1 = require("../services/services.schema");
 let OrderService = class OrderService {
-    constructor(orderModel, customerModel, employeeModel, shopModel) {
+    constructor(orderModel, customerModel, employeeModel, shopModel, servicesModel) {
         this.orderModel = orderModel;
         this.customerModel = customerModel;
         this.employeeModel = employeeModel;
         this.shopModel = shopModel;
+        this.servicesModel = servicesModel;
     }
     async createOrder(req) {
         let customer;
         let employee;
         let shop;
+        let services;
         console.log('new', req);
         customer = await this.customerModel.findOne({ customer_email: req.customer_email });
         console.log('customer', customer);
@@ -40,7 +43,9 @@ let OrderService = class OrderService {
         console.log('employee', employee);
         shop = await this.shopModel.findOne({ name: req.shop });
         console.log('shop', shop);
-        const newOrder = new this.orderModel(Object.assign(Object.assign({}, req), { customer: customer._id, assignTo: employee._id, shop: shop }));
+        services = await this.servicesModel.findOne({ name: req.services });
+        console.log('services', services);
+        const newOrder = new this.orderModel(Object.assign(Object.assign({}, req), { customer: customer._id, assignTo: employee._id, shop: shop, services: services }));
         console.log('new model : ', newOrder);
         return await newOrder.save();
     }
@@ -104,7 +109,8 @@ let OrderService = class OrderService {
                 .find({ shop: shopId })
                 .populate('customer')
                 .populate('assignTo')
-                .populate('shop');
+                .populate('shop')
+                .populate('services');
         }
         else {
             throw new common_1.BadRequestException('Invalid measurement id');
@@ -118,7 +124,9 @@ OrderService = __decorate([
     __param(1, (0, mongoose_1.InjectModel)('Customer')),
     __param(2, (0, mongoose_1.InjectModel)('Employee')),
     __param(3, (0, mongoose_1.InjectModel)('Shop')),
+    __param(4, (0, mongoose_1.InjectModel)('Services')),
     __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model,
         mongoose_2.Model,
         mongoose_2.Model,
         mongoose_2.Model])

@@ -15,7 +15,7 @@ import { ServicesSchema } from 'src/services/services.schema';
 @Module({
   imports: [
     ShopModule,
-    ServicesModule,
+    // ServicesModule,
     MongooseModule.forFeature([
       { name: 'Measurement', schema: MeasurementSchema},
       {

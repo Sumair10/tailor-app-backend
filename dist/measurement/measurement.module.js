@@ -22,7 +22,6 @@ MeasurementModule = __decorate([
     (0, common_1.Module)({
         imports: [
             shop_module_1.ShopModule,
-            services_module_1.ServicesModule,
             mongoose_1.MongooseModule.forFeature([
                 { name: 'Measurement', schema: measurement_schema_1.MeasurementSchema },
                 {
