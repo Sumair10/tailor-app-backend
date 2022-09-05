@@ -91,7 +91,8 @@ let ServicesService = class ServicesService {
         if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
             shopServices = await this.servicesModel
                 .find({ shop: shopId })
-                .populate('shop');
+                .populate('shop')
+                .populate('measurement_fields');
         }
         else {
             throw new common_1.BadRequestException('Invalid measurement id');

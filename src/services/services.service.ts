@@ -102,6 +102,7 @@ export class ServicesService {
       shopServices = await this.servicesModel
          .find({ shop: shopId  })
          .populate('shop')
+         .populate('measurement_fields')
      } else {
        throw new BadRequestException('Invalid measurement id');
      }
