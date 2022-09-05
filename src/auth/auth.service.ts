@@ -94,9 +94,11 @@ export class AuthService {
       const shop = await (
         await this.shopModel.find({ _id : userExist.shopId })
       )
+     
+      // const newUser = 
 
       console.log('userExist', userExist);
-      return userExist;
+      return  userExist.populate('shopId');
     } catch (error) {
       throw new NotFoundException(error.message);
     }

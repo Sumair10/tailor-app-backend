@@ -50,7 +50,7 @@ let AuthService = class AuthService {
             const userExist = await (await this.authModel.findOne({ email }));
             const shop = await (await this.shopModel.find({ _id: userExist.shopId }));
             console.log('userExist', userExist);
-            return userExist;
+            return userExist.populate('shopId');
         }
         catch (error) {
             throw new common_1.NotFoundException(error.message);
