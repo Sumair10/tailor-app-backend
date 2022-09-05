@@ -18,6 +18,7 @@ export class AuthService {
   constructor(
     @InjectModel('Auth') private readonly authModel: Model<Auth>,
     // private readonly mailerService: MailerService,
+    @InjectModel('Shop') private readonly shopModel: Model<Shop>,
     private readonly ShopService: ShopService,
   ) {}
 
@@ -84,9 +85,17 @@ export class AuthService {
   /*************************************** signin ****************************************************/
   async signin(email, pass) {
     try {
+
+  
+
       const userExist = await (
         await this.authModel.findOne({ email })
       )
+      const shop = await (
+        await this.shopModel.find({ _id : userExist.shopId })
+      )
+
+      console.log('userExist', userExist);
       return userExist;
     } catch (error) {
       throw new NotFoundException(error.message);

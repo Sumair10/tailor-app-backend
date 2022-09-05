@@ -11,4 +11,5 @@ export declare class ServicesService {
     getServices(servicesId: string): Promise<any>;
     updateServices(servicesId: any, servicesData: any): Promise<any>;
     deleteServices(servicesId: string): Promise<any>;
+    getAllServicesOfShop(shopId: string): Promise<any>;
 }

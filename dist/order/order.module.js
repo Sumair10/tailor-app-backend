@@ -18,6 +18,8 @@ const employee_module_1 = require("../employee/employee.module");
 const customer_service_1 = require("../customer/customer.service");
 const employee_service_1 = require("../employee/employee.service");
 const customer_schema_1 = require("../customer/customer.schema");
+const shop_schema_1 = require("../shop/shop.schema");
+const shop_module_1 = require("../shop/shop.module");
 let OrderModule = class OrderModule {
 };
 OrderModule = __decorate([
@@ -25,6 +27,7 @@ OrderModule = __decorate([
         imports: [
             employee_module_1.EmployeeModule,
             customer_module_1.CustomerModule,
+            shop_module_1.ShopModule,
             mongoose_1.MongooseModule.forFeature([
                 { name: 'Order', schema: order_schema_1.OrderSchema },
                 {
@@ -34,6 +37,10 @@ OrderModule = __decorate([
                 {
                     name: 'Employee',
                     schema: employee_schema_1.EmployeeSchema,
+                },
+                {
+                    name: 'Shop',
+                    schema: shop_schema_1.ShopSchema,
                 },
             ]),
         ],

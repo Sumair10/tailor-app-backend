@@ -39,5 +39,10 @@ export class ServicesController {
     return await this.servicesService.deleteServices(servicesId);
   }
 
+  @Get('/getAllServicesOfShop/:id')
+  async getAllServicesOfShop(@Param('id') shopId: string ) {
+    const result = await this.servicesService.getAllServicesOfShop(shopId);
+    return result;
+  }
   
 }

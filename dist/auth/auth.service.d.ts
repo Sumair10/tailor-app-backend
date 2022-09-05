@@ -24,10 +24,12 @@
 import { Model } from 'mongoose';
 import { Auth } from './auth.schema';
 import { ShopService } from 'src/shop/shop.service';
+import { Shop } from 'src/shop/shop.schema';
 export declare class AuthService {
     private readonly authModel;
+    private readonly shopModel;
     private readonly ShopService;
-    constructor(authModel: Model<Auth>, ShopService: ShopService);
+    constructor(authModel: Model<Auth>, shopModel: Model<Shop>, ShopService: ShopService);
     signup(req: any): Promise<import("mongoose").Document<unknown, any, Auth> & Auth & {
         _id: import("mongoose").Types.ObjectId;
     }>;

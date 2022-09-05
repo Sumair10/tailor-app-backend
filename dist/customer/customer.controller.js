@@ -34,6 +34,10 @@ let CustomerController = class CustomerController {
     async deleteCustomer(customerId) {
         return await this.customerService.deleteCustomer(customerId);
     }
+    async getAllCustomersOfShop(shopId) {
+        const result = await this.customerService.getAllCustomersOfShop(shopId);
+        return result;
+    }
 };
 __decorate([
     (0, common_1.Post)(),
@@ -64,6 +68,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], CustomerController.prototype, "deleteCustomer", null);
+__decorate([
+    (0, common_1.Get)('/getAllCustomersOfShop/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CustomerController.prototype, "getAllCustomersOfShop", null);
 CustomerController = __decorate([
     (0, common_1.Controller)('customer'),
     __metadata("design:paramtypes", [customer_service_1.CustomerService])

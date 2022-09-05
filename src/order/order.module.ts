@@ -11,11 +11,14 @@ import { EmployeeModule } from 'src/employee/employee.module';
 import { CustomerService } from 'src/customer/customer.service';
 import { EmployeeService } from 'src/employee/employee.service';
 import { CustomerSchema } from 'src/customer/customer.schema';
+import { ShopSchema } from 'src/shop/shop.schema';
+import { ShopModule } from 'src/shop/shop.module';
 
 @Module({
   imports: [
     EmployeeModule,
     CustomerModule,
+    ShopModule,
     MongooseModule.forFeature([
       { name: 'Order', schema: OrderSchema},
       {
@@ -25,6 +28,10 @@ import { CustomerSchema } from 'src/customer/customer.schema';
       {
         name: 'Employee',
         schema: EmployeeSchema,
+      },
+      {
+        name: 'Shop',
+        schema: ShopSchema,
       },
       // { name: 'Organization', schema: OrgSchema },
       // { name: 'Auth', schema: AuthSchema },

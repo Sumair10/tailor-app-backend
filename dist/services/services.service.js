@@ -86,6 +86,18 @@ let ServicesService = class ServicesService {
             return 'services deleted successfully';
         }
     }
+    async getAllServicesOfShop(shopId) {
+        let shopServices;
+        if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
+            shopServices = await this.servicesModel
+                .find({ shop: shopId })
+                .populate('shop');
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid measurement id');
+        }
+        return shopServices;
+    }
 };
 ServicesService = __decorate([
     (0, common_1.Injectable)(),

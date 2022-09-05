@@ -39,6 +39,12 @@ export class CustomerController {
     return await this.customerService.deleteCustomer(customerId);
   }
 
+  @Get('/getAllCustomersOfShop/:id')
+  async getAllCustomersOfShop(@Param('id') shopId: string ) {
+    const result = await this.customerService.getAllCustomersOfShop(shopId);
+    return result;
+  }
+
   // @Post('getAllProjects')
   // async getAllProjects(@Body('id') id: string, @Body('isAdmin') isAdmin: boolean,@Body('parent_folder') parent_folder: string) {
   //   console.log('id', id);

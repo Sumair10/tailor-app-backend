@@ -21,21 +21,26 @@ const employee_service_1 = require("../employee/employee.service");
 const customer_module_1 = require("../customer/customer.module");
 const customer_schema_1 = require("../customer/customer.schema");
 const employee_schema_1 = require("../employee/employee.schema");
+const shop_schema_1 = require("../shop/shop.schema");
 let OrderService = class OrderService {
-    constructor(orderModel, customerModel, employeeModel) {
+    constructor(orderModel, customerModel, employeeModel, shopModel) {
         this.orderModel = orderModel;
         this.customerModel = customerModel;
         this.employeeModel = employeeModel;
+        this.shopModel = shopModel;
     }
     async createOrder(req) {
         let customer;
         let employee;
+        let shop;
         console.log('new', req);
         customer = await this.customerModel.findOne({ customer_email: req.customer_email });
         console.log('new', customer);
         employee = await this.employeeModel.findOne({ email: req.assign_to });
         console.log('new', employee);
-        const newOrder = new this.orderModel(Object.assign(Object.assign({}, req), { customer: customer._id, assign_to: employee._id }));
+        shop = await this.shopModel.findOne({ name: req.shop });
+        console.log('new', shop);
+        const newOrder = new this.orderModel(Object.assign(Object.assign({}, req), { customer: customer._id, assign_to: employee._id, shop: shop }));
         console.log('new model : ', newOrder);
         return await newOrder.save();
     }
@@ -45,7 +50,8 @@ let OrderService = class OrderService {
             order = await this.orderModel
                 .find({ _id: orderId })
                 .populate('customer')
-                .populate('assign_to');
+                .populate('assign_to')
+                .populate('shop');
         }
         else {
             throw new common_1.BadRequestException('Invalid order id');
@@ -91,13 +97,29 @@ let OrderService = class OrderService {
             return 'order deleted successfully';
         }
     }
+    async getAllOrdersOfShop(shopId) {
+        let shopOrders;
+        if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
+            shopOrders = await this.orderModel
+                .find({ shop: shopId })
+                .populate('customer')
+                .populate('assign_to')
+                .populate('shop');
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid measurement id');
+        }
+        return shopOrders;
+    }
 };
 OrderService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('Order')),
     __param(1, (0, mongoose_1.InjectModel)('Customer')),
     __param(2, (0, mongoose_1.InjectModel)('Employee')),
+    __param(3, (0, mongoose_1.InjectModel)('Shop')),
     __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model,
         mongoose_2.Model,
         mongoose_2.Model])
 ], OrderService);

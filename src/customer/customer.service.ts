@@ -91,6 +91,21 @@ export class CustomerService {
     }
   }
 
+
+  async getAllCustomersOfShop(shopId: string): Promise<any> {
+    let shopCustomers
+     if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
+      shopCustomers = await this.customerModel
+         .find({ shop: shopId  })
+         .populate('shop');
+     } else {
+       throw new BadRequestException('Invalid measurement id');
+     }
+   
+     ////console.log('files', files);
+     return shopCustomers;
+   }
+
   /*************************** get all projects ***************************/
   // async getAllProjects(id, isAdmin, parent_folder) {
   //   console.log('id', id);

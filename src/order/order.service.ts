@@ -13,19 +13,22 @@ import { Order } from './order.schema';
 import { CustomerModule } from 'src/customer/customer.module';
 import { Customer } from 'src/customer/customer.schema';
 import { Employee } from 'src/employee/employee.schema';
+import { Shop } from 'src/shop/shop.schema';
 
 @Injectable()
 export class OrderService {
   constructor(
     @InjectModel('Order') private readonly orderModel: Model<Order>,
     @InjectModel('Customer') private readonly customerModel: Model<Customer>,
-    @InjectModel('Employee') private readonly employeeModel: Model<Employee>
+    @InjectModel('Employee') private readonly employeeModel: Model<Employee>,
+    @InjectModel('Shop') private readonly shopModel: Model<Shop>,
     // private readonly EmployeeService : EmployeeService,
   ) {}
   /*************************** create a folder ***************************/
   async createOrder(req): Promise<any> {
     let customer
     let employee
+    let shop
 
     console.log('new', req);
 
@@ -33,8 +36,10 @@ export class OrderService {
       console.log('new', customer);
       employee = await this.employeeModel.findOne({email : req.assign_to})
       console.log('new', employee);
+      shop = await this.shopModel.findOne({name : req.shop})
+      console.log('new', shop);
     
-      const newOrder = new this.orderModel({...req , customer : customer._id , assign_to : employee._id});
+      const newOrder = new this.orderModel({...req , customer : customer._id , assign_to : employee._id , shop : shop});
       console.log('new model : ', newOrder);
       return await newOrder.save();
     
@@ -49,6 +54,7 @@ export class OrderService {
          .find({ _id: orderId  })
          .populate('customer')
          .populate('assign_to')
+         .populate('shop')
          ;
      } else {
        throw new BadRequestException('Invalid order id');
@@ -109,6 +115,21 @@ export class OrderService {
     }
   }
 
+  async getAllOrdersOfShop(shopId: string): Promise<any> {
+    let shopOrders
+     if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
+      shopOrders = await this.orderModel
+         .find({ shop: shopId  })
+         .populate('customer')
+         .populate('assign_to')
+         .populate('shop')
+     } else {
+       throw new BadRequestException('Invalid measurement id');
+     }
+   
+     ////console.log('files', files);
+     return shopOrders;
+   }
   /*************************** get all projects ***************************/
   // async getAllProjects(id, isAdmin, parent_folder) {
   //   console.log('id', id);

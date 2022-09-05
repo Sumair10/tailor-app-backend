@@ -9,4 +9,5 @@ export declare class CustomerService {
     getCustomer(customerId: string): Promise<any>;
     updateCustomer(customerId: any, customerData: any): Promise<any>;
     deleteCustomer(customerId: string): Promise<any>;
+    getAllCustomersOfShop(shopId: string): Promise<any>;
 }

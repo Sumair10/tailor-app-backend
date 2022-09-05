@@ -7,4 +7,5 @@ export declare class OrderController {
     getOrder(orderId: string): Promise<any>;
     updateOrder(orderId: String, orderData: any): Promise<any>;
     deleteOrder(orderId: string): Promise<any>;
+    getAllOrdersOfShop(shopId: string): Promise<any>;
 }

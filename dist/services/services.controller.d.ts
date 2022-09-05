@@ -7,4 +7,5 @@ export declare class ServicesController {
     getServices(servicesId: string): Promise<any>;
     updateServices(servicesId: String, servicesData: any): Promise<any>;
     deleteServices(servicesId: string): Promise<any>;
+    getAllServicesOfShop(shopId: string): Promise<any>;
 }

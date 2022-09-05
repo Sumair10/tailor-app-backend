@@ -7,4 +7,5 @@ export declare class CustomerController {
     getCustomer(customerId: string): Promise<any>;
     updateCustomer(customerId: String, customerData: any): Promise<any>;
     deleteCustomer(customerId: string): Promise<any>;
+    getAllCustomersOfShop(shopId: string): Promise<any>;
 }

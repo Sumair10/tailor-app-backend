@@ -81,6 +81,18 @@ let CustomerService = class CustomerService {
             return 'customer deleted successfully';
         }
     }
+    async getAllCustomersOfShop(shopId) {
+        let shopCustomers;
+        if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
+            shopCustomers = await this.customerModel
+                .find({ shop: shopId })
+                .populate('shop');
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid measurement id');
+        }
+        return shopCustomers;
+    }
 };
 CustomerService = __decorate([
     (0, common_1.Injectable)(),

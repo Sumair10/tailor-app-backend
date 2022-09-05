@@ -96,4 +96,18 @@ export class ServicesService {
     }
   }
 
+  async getAllServicesOfShop(shopId: string): Promise<any> {
+    let shopServices
+     if (shopId.match(/^[0-9a-fA-F]{24}$/)) {
+      shopServices = await this.servicesModel
+         .find({ shop: shopId  })
+         .populate('shop')
+     } else {
+       throw new BadRequestException('Invalid measurement id');
+     }
+   
+     ////console.log('files', files);
+     return shopServices;
+   }
+
 }

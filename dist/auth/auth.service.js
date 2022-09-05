@@ -21,8 +21,9 @@ const bcrypt = require('bcryptjs');
 const shop_service_1 = require("../shop/shop.service");
 const shop_schema_1 = require("../shop/shop.schema");
 let AuthService = class AuthService {
-    constructor(authModel, ShopService) {
+    constructor(authModel, shopModel, ShopService) {
         this.authModel = authModel;
+        this.shopModel = shopModel;
         this.ShopService = ShopService;
     }
     async signup(req) {
@@ -47,6 +48,8 @@ let AuthService = class AuthService {
     async signin(email, pass) {
         try {
             const userExist = await (await this.authModel.findOne({ email }));
+            const shop = await (await this.shopModel.find({ _id: userExist.shopId }));
+            console.log('userExist', userExist);
             return userExist;
         }
         catch (error) {
@@ -90,7 +93,9 @@ let AuthService = class AuthService {
 AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('Auth')),
+    __param(1, (0, mongoose_1.InjectModel)('Shop')),
     __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model,
         shop_service_1.ShopService])
 ], AuthService);
 exports.AuthService = AuthService;

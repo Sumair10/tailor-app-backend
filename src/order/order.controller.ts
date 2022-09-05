@@ -38,6 +38,11 @@ export class OrderController {
     return await this.orderService.deleteOrder(orderId);
   }
 
+  @Get('/getAllOrdersOfShop/:id')
+  async getAllOrdersOfShop(@Param('id') shopId: string ) {
+    const result = await this.orderService.getAllOrdersOfShop(shopId);
+    return result;
+  }
  
 
   // @Post('getAllProjects')

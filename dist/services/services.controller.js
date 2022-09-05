@@ -34,6 +34,10 @@ let ServicesController = class ServicesController {
     async deleteServices(servicesId) {
         return await this.servicesService.deleteServices(servicesId);
     }
+    async getAllServicesOfShop(shopId) {
+        const result = await this.servicesService.getAllServicesOfShop(shopId);
+        return result;
+    }
 };
 __decorate([
     (0, common_1.Post)(),
@@ -64,6 +68,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ServicesController.prototype, "deleteServices", null);
+__decorate([
+    (0, common_1.Get)('/getAllServicesOfShop/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ServicesController.prototype, "getAllServicesOfShop", null);
 ServicesController = __decorate([
     (0, common_1.Controller)('services'),
     __metadata("design:paramtypes", [services_service_1.ServicesService])

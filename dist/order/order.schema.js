@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 exports.OrderSchema = new mongoose.Schema({
     customer: { type: Schema.Types.ObjectId, ref: 'Customer', required: true },
     assign_to: { type: Schema.Types.ObjectId, ref: 'Employee', required: true },
+    shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
     delivery_date: { type: Date },
     order_status: { type: String },
     reference: { type: String },
